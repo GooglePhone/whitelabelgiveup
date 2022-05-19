@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>從開始到放棄</title>
+
+	<script src="https://unpkg.com/vue@3"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<style type="text/css">
+		#css_table {
+			display: table;
+
+		}
+
+		.css_tr {
+			display: table-row;
+			padding-right: 3rem;
+		}
+
+		.css_td {
+			display: table-cell;
+			padding-right: 3rem;
+			padding-bottom: 0.4rem;
+		}
+
+		blockquote {
+			background-color: lightgray;
+			padding: 0.5rem
+		}
+
+		.tooltip {
+			position: relative;
+			display: inline-block;
+			border-bottom: 1px dotted black;
+		}
+
+		.tooltip .tooltiptext {
+			visibility: hidden;
+			width: 120px;
+			background-color: black;
+			color: #fff;
+			text-align: center;
+			border-radius: 6px;
+			padding: 5px 0;
+
+			/* Position the tooltip */
+			position: absolute;
+			z-index: 1;
+		}
+
+		.tooltip:hover .tooltiptext {
+			visibility: visible;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<h1>接白牌相關</h1>
+
+		<fieldset>
+			<legend>取得白牌相關資訊:</legend>
+			<div>
+				<p><a
+						href="https://docs.google.com/spreadsheets/d/1A7gCHLcWuDf8I0zOWgoI_llZFGPY614hX2JzO5rUSZw/edit#gid=0">
+						white label文件(內含各白牌名稱、white label code、對接文件與 jira 單等) </a>
+				<p>
+
+				<p><a href="https://mship.admincod88.com/">總後台</a>
+				<p>
+				<p><a href="https://devops-portal.admincod88.com/accounts/login/">DevOps Portal</a>
+				<p>
+
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>取得白牌相關資訊:</legend>
+			<p>登入總後台前按出開發者模式,登入後取得request的account與password
+			<p>
+				account : <input type="text" v-model="account" />&nbsp;&nbsp;
+				password : <input type="text" v-model="password" />
+			<p>開啟terminal</p>
+			<p>vi ~/.bash_profile</p>
+			<fieldset>
+				<p>export MSHIP_PROD_USERNAME=<span>{{account}}<span></p>
+				<p>export MSHIP_PROD_PWD=<span>{{password}}<span></p>
+				<p>export PATH=$PATH:$MSHIP_PROD_USERNAME:$MSHIP_PROD_PWD</p>
+			</fieldset>
+			<p>source ~/.bash_profile</p>
+		</fieldset>
+		<hr>
+		<h3>開工</h3>
+		<fieldset>
+			<legend><b>切分支: (3個專案都要切)</b></legend>
+			<input type="text" v-model="branch" placeholder="jira單號" style="margin-bottom: 0.5rem;">
+			<fieldset>
+				<div>
+					git checkout -b <span>{{branch}}</span>
+				</div>
+			</fieldset>
+		</fieldset>
+		<fieldset>
+			<legend>產生-移動到white_label_gen目錄底下(cd white_label_gen)</S>
+			</legend>
+			<fieldset>
+				<legend>MPS 接白牌流程</legend>
+				<div id="css_table">
+					<div class="css_tr">
+						<div class="css_td">參數名稱</div>
+						<div class="css_td">參數值</div>
+						<div class="css_td">來源</div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>env<label></div>
+						<div class="css_td"><input type="text" v-model="env"></div>
+						<div class="css_td"><a :href="jira_web+branch" target=”_blank”>JIRA上看</a></div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>white_label_id<label></div>
+						<div class="css_td"><input type="text" v-model="white_label_id"></div>
+						<div class="css_td"><a :href="jira_web+branch" target=”_blank”>JIRA上看</a></div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>white_label_name<label></div>
+						<div class="css_td"><input type="text" v-model="white_label_name"></div>
+						<div class="css_td"><a :href="jira_web+branch" target=”_blank”>JIRA上看</a></div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>currency<label></div>
+						<div class="css_td"><input type="text" v-model="currency"></div>
+						<div class="css_td"><a :href="jira_web+branch" target=”_blank”>JIRA上看</a></div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>account_prefix<label></div>
+						<div class="css_td"><input type="text" v-model="account_prefix"></div>
+						<div class="css_td"><a :href="jira_web+branch" target=”_blank”>JIRA上看</a></div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>ims_home<label></div>
+						<div class="css_td"><input type="text" v-model="ims_home"></div>
+						<div class="css_td"> <a :href="dev_result" target=”_blank”>Devops-Portal</a> </div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>ec_home<label></div>
+						<div class="css_td"><input type="text" v-model="ec_home"></div>
+						<div class="css_td"><a :href="dev_result" target=”_blank”>Devops-Portal</a></div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>ec_api<label></div>
+						<div class="css_td"><input type="text" v-model="ec_api"></div>
+						<div class="css_td"><a :href="dev_result" target=”_blank”>Devops-Portal</a><i
+								class="material-icons">info</i> </div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>ag<label></div>
+						<div class="css_td"><input type="text" v-model="ag"></div>
+						<div class="css_td"> <a :href="dev_result" target=”_blank”>Devops-Portal</a>產生信件用</div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>db_user<label></div>
+						<div class="css_td"><input type="text" v-model="db_user"></div>
+						<div class="css_td">跟dba要帳密 James</div>
+					</div>
+					<div class="css_tr">
+						<div class="css_td"><label>db_pwd<label></div>
+						<div class="css_td"><input type="text" v-model="db_pwd"></div>
+						<div class="css_td">跟dba要帳密 James</div>
+					</div>
+					<blockquote>跪求 {{account_prefix}} db帳密</blockquote>
+					<p style="color:red">Devops-Portal ：
+						依需求進入該環境(UAT, PRD) Devops-Portal,Search Keyword 搜尋 prefix {{account_prefix}},
+						無特別註明 weight 小的先 </p>
+				</div>
+				<fieldset>
+					<legend>cd whitelabel-gen ,到whitelabel-gen執行 以下</legend>
+					<blockquote>{{gradleValue}}</blockquote>
+				</fieldset>
+				<br>
+			</fieldset>
+			<fieldset>
+				<legend>測試相關
+				</legend>
+				<span>
+					<fieldset>
+						<legend>R__Walletaccount注意事項</legend>
+						<p>
+							同時接 SP_RNG, SP_MPG 時, 其中一個會錯誤, 只能一個一個測
+							AE_LOT apiurl 測試用 https, 正式 需改為 http
+							GW, SPADEGAMING 無法在local測試因為啟動遊戲時會打回調 只要確認參數沒錯就可以
+							SBOBET 上線前需要使用程式新增代理
+						</p>
+
+					</fieldset>
+					<fieldset>
+						<legend>R__Walletaccount.sql</legend>
+						<p>新增遊戲至對應環境的R__Walletaccount.sql
+							加入需求文件上這次要新增的遊戲
+							config欄位的資料必須對應至需求文件上的欄位資料
+						</p>
+					</fieldset>
+					<fieldset>
+						<legend>測試/新增代理 testCreateAgent</legend>
+						<p>如果要跑一些遊戲商的api去改東西的創帳號的
+							都用gameprovider的名字去找找T結尾那隻測試黨</p>
+						<p>isDemo用來判斷是否為PROD
+							語系可從文件上得知
+							主題, 限額記得要填</p>
+					</fieldset>
+					<fieldset>
+						<legend>手動測試(有錯誤或是SP_RNG, SP_MPG 同時存在) getProfileGameProvidor</legend>
+						<p>CmsProfileGameProviderServiceManualIT</p>
+						<p>語言和幣別需改為需求文件上指定的GW無法在local測試因為啟動遊戲時會打回調 只要確認參數沒錯就可以</p>
+					</fieldset>
+				</span>
+
+			</fieldset>
+
+			<fieldset>
+				<legend>將 --account_prefix 後的欄位移除，補上 --game_only=true , 後貼到 jira 單上，供將來新增遊戲用
+				</legend>
+				<blockquote>{{jiar_post}}</blockquote>
+			</fieldset>
+		</fieldset>
+		<fieldset style="margin-top: 1rem">
+			<b>** 關於Sbobet,目前有兩隻在接白牌或新遊戲的時候,要看一下文件,新的都是跑Sbobet2,開頭的</b>
+			<p>建代理的參數 casinoTableLimit 基本不需要變動,要確認請看文件 <a href="https://imgur.com/a/uqBYiSc" target="_blank">來源</a></p>
+			<p>基本上與原有流程相同</p>
+		</fieldset>
+		<hr>
+		<fieldset>
+			<legend>record相關
+			</legend>
+			<span></span>
+			<fieldset>
+				<legend>看game-record-flyway/profile/prod/db/migration/R__InitData.sql,會有相關SQL
+				</legend>
+				<ol>
+					<li>先貼到game-record-flyway/profile/local/db/migration/R__InitData.sql</li>
+					<li>然後一個一個遊戲測試{XXX}GetBetHistorySchedulerManualT</li>
+					<li>再貼到game-record-flyway/profile/prod/db/migration/R__InitData.sql</li>
+					<li>也要修改下面的config</li>
+				</ol>
+			</fieldset>
+		</fieldset>
+		<fieldset>
+			<legend>Deploy
+			</legend>
+			<ol type="1">
+				<li>
+					<blockquote>pull deploy 專案到最新版</blockquote>
+				</li>
+				<li>
+					<blockquote>至 shell 目錄，執行 sh template.sh ENV TEMPLATE_WL(yabo) TARGET_WL, e.g. sh template.sh prod
+						yabo crown82
+					</blockquote>
+				</li>
+				<blockquote>
+					sh template.sh {{env.toLowerCase()}} yabo {{white_label_id}}
+				</blockquote>
+				<li>
+					<blockquote>ENV為對應環境(uat/prod), TEMPLATE_WL為複製的來源white label, 目前都指定為yabo即可。TARGET_WL為本次新增的white
+						label code.
+					</blockquote>
+				</li>
+			</ol>
+			<fieldset>
+				<legend>
+					至 shell/init.sh, 尋找與目前 white label code 相近的白牌，在對應位置新增
+				</legend>
+				<ol type="1">
+					<li>
+					</li>{white label code}=$git_dir"/mps/{white label code}"<blockquote>
+						{{white_label_id}}=$git_dir"/mps/{{white_label_id}}</blockquote>
+					<li>
+					</li>project_git_clone ${white label code}<blockquote>project_git_clone {{white_label_id}}
+					</blockquote>
+				</ol>
+				<blockquote>
+					<p style="color:red">**若whitelabelcode前面為數字需改成英文**</p>
+					<p>例如 white_label_code 為88yz</p>
+					<p>eight_eight_yz=$git_dir"/mps/88yz</p>
+					<p>project_git_clone eight_eight_yz</p>
+
+				</blockquote>
+			</fieldset>
+		</fieldset>
+
+		<fieldset>
+			<legend>Jenkins 先build完再deploy (只要在prod部署完都要到as-ims-maintenance回報)
+			</legend>
+			<fieldset>
+				<legend>MPS部署</legend>
+				<ol type="1">
+					<li>
+						<blockquote><a href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/newJob">
+								到mps底下的script點選newItem
+							</a></blockquote>
+					</li>
+					<li>
+						<blockquote>Enter an item name : {prefix}_{white_label_code}
+						</blockquote>
+						<p v-if="account_prefix != '' && white_label_id != ''">
+							eg:{{account_prefix}}_{{white_label_id.toUpperCase()}}</p>
+					</li>
+					<li>
+						選擇If you want to create a new item from other existing, you can use this option:
+						然後從尾數相同的白牌選一個,要修改組態裡面的shell
+					</li>
+					<li>
+						<a href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/" target="_blank">
+							建新白牌時(build,deploy後) 我們最後要多加一個 啟用 DI 服務的步驟 再請大家注意</a>
+						1. <a
+							href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/0_INIT_WL_JWT/">新增白牌的JWT</a>
+						2. <a
+							href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/1_TRIGGER_DI_WL_SYNC/">新白牌deploy成功後
+							請到這個 job, 輸入大寫白牌名稱 並選擇 ACTIVE 啟用</a>
+						3. 再到 <a href="https://kibana.admincod88.com/app/home#/">kibana</a>輸入關鍵字確認服務已啟動
+
+						</a>
+					</li>
+					<li>
+						確定可以登上ec網站，就準備寄信到Ｍobile,IMS群
+						<br>
+						<fieldset>
+							<div>MPS {{account_prefix}}_{{white_label_id.toUpperCase()}} {{env.toUpperCase()}}
+								deployment</div>
+							<div>
+								<p>Hi all,</p>
+								<p>MPS new site "{{account_prefix}}_{{white_label_id.toUpperCase()}}" in {{env}}
+									environment is deployed.</p>
+								<p>EC : {{addHttps(ec_home)}}<br>
+									AG : {{addHttps(ag)}}<br>
+									IMS : {{addHttps(ims_home)}}</p>
+								<p>Thanks.</p>
+							</div>
+						</fieldset>
+					</li>
+				</ol>
+				<blockquote>
+					有ae樂透自開彩的時候
+					要到<a
+						href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
+						Jenkins,執行job
+					</a>
+				</blockquote>
+			</fieldset>
+
+		</fieldset>
+		<div>
+			<fieldset>
+				<legend>git部分</legend>
+				切換分支：git checkout 單號
+				<fieldset>
+					<legend>git commit</legend>
+					<ol type="1">
+						<li>
+							<blockquote>git add .</blockquote>
+						</li>
+						<li>
+							<blockquote>git commit -m 單號 新增 單子上面標題</blockquote>
+						</li>
+						<li>
+							<blockquote>git push</blockquote>
+						</li>
+					</ol>
+				</fieldset>
+
+				<fieldset>
+					<legend>git <span style="color: red;">衝突</span></legend>
+					<ol type="1">
+						<li>
+							<blockquote>git rebase origin/master -i</blockquote>
+						</li>
+						<li>
+							<blockquote>git checkout master</blockquote>
+						</li>
+						<li>
+							<blockquote>git pull</blockquote>
+						</li>
+						<li>
+							<blockquote>解決衝突</blockquote>
+						</li>
+						<li>
+							<blockquote>git rebase origin/master -i</blockquote>
+						</li>
+						<li>
+							<blockquote>git rebase --continue</blockquote>
+						</li>
+						<li>
+							<blockquote> git push origin 單號 </blockquote>
+						</li>
+					</ol>
+				</fieldset>
+				無衝突則到<a title="Dashboard" id="logo" href="https://gitlab.nexiosoft.com/" target="_blank"><svg width="24"
+						height="24" class="tanuki-logo" viewBox="0 0 36 36">
+						<path class="tanuki-shape tanuki-left-ear" fill="#e24329"
+							d="M2 14l9.38 9v-9l-4-12.28c-.205-.632-1.176-.632-1.38 0z"></path>
+						<path class="tanuki-shape tanuki-right-ear" fill="#e24329"
+							d="M34 14l-9.38 9v-9l4-12.28c.205-.632 1.176-.632 1.38 0z"></path>
+						<path class="tanuki-shape tanuki-nose" fill="#e24329" d="M18,34.38 3,14 33,14 Z"></path>
+						<path class="tanuki-shape tanuki-left-eye" fill="#fc6d26" d="M18,34.38 11.38,14 2,14 6,25Z">
+						</path>
+						<path class="tanuki-shape tanuki-right-eye" fill="#fc6d26" d="M18,34.38 24.62,14 34,14 30,25Z">
+						</path>
+						<path class="tanuki-shape tanuki-left-cheek" fill="#fca326"
+							d="M2 14L.1 20.16c-.18.565 0 1.2.5 1.56l17.42 12.66z"></path>
+						<path class="tanuki-shape tanuki-right-cheek" fill="#fca326"
+							d="M34 14l1.9 6.16c.18.565 0 1.2-.5 1.56L18 34.38z"></path>
+					</svg>
+
+					<span class="logo-text d-none d-lg-block gl-ml-3">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 617 169" width="5rem" height="1rem">
+							<path
+								d="M315.26 2.97h-21.8l.1 162.5h88.3v-20.1h-66.5l-.1-142.4M465.89 136.95c-5.5 5.7-14.6 11.4-27 11.4-16.6 0-23.3-8.2-23.3-18.9 0-16.1 11.2-23.8 35-23.8 4.5 0 11.7.5 15.4 1.2v30.1h-.1m-22.6-98.5c-17.6 0-33.8 6.2-46.4 16.7l7.7 13.4c8.9-5.2 19.8-10.4 35.5-10.4 17.9 0 25.8 9.2 25.8 24.6v7.9c-3.5-.7-10.7-1.2-15.1-1.2-38.2 0-57.6 13.4-57.6 41.4 0 25.1 15.4 37.7 38.7 37.7 15.7 0 30.8-7.2 36-18.9l4 15.9h15.4v-83.2c-.1-26.3-11.5-43.9-44-43.9M557.63 149.1c-8.2 0-15.4-1-20.8-3.5V70.5c7.4-6.2 16.6-10.7 28.3-10.7 21.1 0 29.2 14.9 29.2 39 0 34.2-13.1 50.3-36.7 50.3m9.2-110.6c-19.5 0-30 13.3-30 13.3v-21l-.1-27.8h-21.3l.1 158.5c10.7 4.5 25.3 6.9 41.2 6.9 40.7 0 60.3-26 60.3-70.9-.1-35.5-18.2-59-50.2-59M77.9 20.6c19.3 0 31.8 6.4 39.9 12.9l9.4-16.3C114.5 6 97.3 0 78.9 0 32.5 0 0 28.3 0 85.4c0 59.8 35.1 83.1 75.2 83.1 20.1 0 37.2-4.7 48.4-9.4l-.5-63.9V75.1H63.6v20.1h38l.5 48.5c-5 2.5-13.6 4.5-25.3 4.5-32.2 0-53.8-20.3-53.8-63-.1-43.5 22.2-64.6 54.9-64.6M231.43 2.95h-21.3l.1 27.3v94.3c0 26.3 11.4 43.9 43.9 43.9 4.5 0 8.9-.4 13.1-1.2v-19.1c-3.1.5-6.4.7-9.9.7-17.9 0-25.8-9.2-25.8-24.6v-65h35.7v-17.8h-35.7l-.1-38.5M155.96 165.47h21.3v-124h-21.3v124M155.96 24.37h21.3V3.07h-21.3v21.3">
+							</path>
+						</svg>
+
+					</span>
+				</a>的menu選擇Merge Request,選擇剛剛push的資料
+			</fieldset>
+		</div>
+
+		<div>
+			<fieldset>
+				<legend>
+					站點追加遊戲
+				</legend>
+				兩部份：
+				<ol>
+					<li>執行--game的gradle指令，然後到此站點的R__Walletaccount.sql找到此遊戲,測試</li>
+					<li>record的部分找到mps-parent底下的.gen裡面站名的Record.sql，貼到Record專案的local測試
+						測試完畢後貼到prod,含遊戲資訊、config</li>
+					<li>到<a href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/">
+							Jenkins</a>部版追加的站點(build -> deploy)</li>
+					<li>然後要去slack的as-ims-maintenance講部版情況</li>
+					<li>把jira單回給報告人,追加遊戲不用QA</li>
+				</ol>
+				<blockquote>例如 V05_789BET PROD deployed - 追加RCB</blockquote>
+			</fieldset>
+
+			<fieldset>
+				<legend>平台加新遊戲
+				</legend>
+				<ol>
+					<li>mps-flyway改sql去 rpt max min不用填</li>
+					<li> 到<a
+							href="https://docs.google.com/spreadsheets/d/1iJDOHG6i3R_bq_ezuIdOPqHw-uv94dZIpkQo5MYSBBY/edit#gid=622251053">excel</a>
+						添加版本號</li>
+					<li>提交程式碼,到git lab上Merge Request</li>
+					<li>到<a href="https://jenkins.stgdevops.site/view/MPS/job/MPS/job/SCRIPT/job/AE/">AE Jenkins</a>部版
+						MPS_AE_BUILD_BE (build -> deploy)
+					</li>
+				</ol>
+				<fieldset>
+					<legend>AE 加新遊戲</legend>
+					<ol>
+						<li>到單子下面找SQL附件,查看SQL有無錯誤</li>
+						<li>依照幣別把SQL填入
+							<p>whitelabel-gen/src/main/kotlin/com/cnx/whiteLabelGen/template/flyway/RDefaultTop10GamesTemplate.kt
+							</p>
+							*else部分THB
+						</li>
+						<li>
+							<p>執行</p>
+							<blockquote>./gradlew bootRun
+								-Pargs=--env=PROD,--execution_mode=DEFAULT_TOP_10_AE_GAMING_GAMES
+							</blockquote>
+						</li>
+						<li>請 [~gio.liao]協助補圖，謝謝</li>
+						<li>丟到前端值日生請前端改</li>
+						<li>提交程式碼,到git lab上Merge Request</li>
+						<li>到<a href="https://jenkins.stgdevops.site/view/MPS/job/MPS/job/SCRIPT/job/AE/">AE
+								Jenkins</a>部版
+							MPS_AE_BUILD_BE (build -> deploy)
+						</li>
+					</ol>
+					然後到<a href="https://ae.stgdevops.site/">前台網站</a>看看是否有遊戲
+					有的話把jira單work flow改為QA(Stag) 然後轉給Keven (or crystal)
+				</fieldset>
+			</fieldset>
+			<fieldset>
+				<legend>AE LOTTY(自開彩)</legend>
+				<a
+					href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
+					間白牌或追加遊戲的時候有AE自開彩時(可看
+					遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
+				</a>
+				<a
+					href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
+					要到Jenkins job輸入白牌代碼並執行
+				</a>
+			</fieldset>
+		</div>
+	</div>
+
+	<div>
+		<fieldset></fieldset>
+		AWC 改限紅 才要 通知alice
+
+	</div>
+
+</body>
+<script>
+	const doubleDash = '--'
+	const comma = ','
+	Vue.createApp({
+		data() {
+			return {
+				account: '',
+				password: '',
+				gradleValue: '',
+				start: './gradlew bootRun -Pargs=',
+				env: 'PROD',
+				white_label_id: '',
+				white_label_name: '',
+				currency: '',
+				account_prefix: '',
+				ims_home: '',
+				ec_home: '',
+				ec_api: '',
+				ag: '',
+				db_user: '',
+				db_pwd: '',
+				jiar_post: '',
+				branch: '',
+				jira_web: 'https://jira.nexiosoft.com/browse/',
+				dev_web: 'https://devops-portal.admincod88.com/wl/info?search_type=WL_CODE&keyword=',
+				dev_result: '',
+				isChange: true,
+			}
+		},
+		watch: {
+			// whenever question changes, this function will run
+			env(newValue, oldValue) {
+				this.addParam(newValue, oldValue, 'env')
+			},
+			white_label_id(newValue, oldValue) {
+				this.addParam(newValue, oldValue, 'white_label_id')
+			},
+			white_label_name(newValue, oldValue) {
+				this.addParam(`'${newValue}'`, `'${oldValue}'`, 'white_label_name')
+			},
+			currency(newValue, oldValue) {
+				this.addParam(newValue, oldValue, 'currency')
+			},
+			account_prefix(newValue, oldValue) {
+				this.dev_result = this.dev_web + newValue
+				this.addParam(newValue, oldValue, 'account_prefix')
+			},
+			ims_home(newValue, oldValue) {
+				newValue = this.addHttps(newValue)
+				oldValue = this.addHttps(oldValue)
+				this.addParam(newValue, oldValue, 'ims_home')
+			},
+			ec_home(newValue, oldValue) {
+				newValue = this.addHttps(newValue)
+				oldValue = this.addHttps(oldValue)
+				this.addParam(newValue, oldValue, 'ec_home')
+			},
+			ec_api(newValue, oldValue) {
+				newValue = this.addHttps(newValue)
+				oldValue = this.addHttps(oldValue)
+				this.addParam(newValue, oldValue, 'ec_api')
+			},
+			db_user(newValue, oldValue) {
+				this.addParam(newValue, oldValue, 'db_user')
+			},
+			db_pwd(newValue, oldValue) {
+				this.addParam(newValue, oldValue, 'db_pwd')
+				this.jiar_post = this.start
+					+ `${doubleDash}env=${this.env.trim()}${comma}`
+					+ `${doubleDash}white_label_id=${this.white_label_id.trim()}${comma}`
+					+ `${doubleDash}white_label_name='${this.white_label_name.trim()}'${comma}`
+					+ `${doubleDash}currency=${this.currency.trim()}${comma}`
+					+ `${doubleDash}account_prefix=${this.account_prefix.trim()}${comma}`
+					+ '--game_only=true'
+			},
+		},
+		methods: {
+			addParam(newValue, oldValue, param) {
+				let newOne = `${doubleDash}${param}=${newValue.trim()}${comma}`
+				let oldOne = `${doubleDash}${param}=${oldValue.trim()}${comma}`
+				this.gradleValue = this.gradleValue.replace(oldOne, "") + newOne
+			},
+			addHttps(value) {
+				if (value.indexOf('https') == -1 || value.indexOf('http') == -1) {
+					return 'https://' + value
+				}
+				return value
+			},
+			copyText(text) {
+				if (text.slice(text.length - 1) === comma) {
+					text = text.substring(0, text.length - 1)
+				}
+				navigator.clipboard.writeText(text);
+			}
+		},
+		mounted() {
+			this.gradleValue = this.start
+			this.addParam(this.env, this.env, 'env')
+		},
+	}).mount('#app')
+
+
+	// git rebase origin/master -i
+</script>
+
+</html>
