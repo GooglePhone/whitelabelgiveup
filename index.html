@@ -1,3 +1,25 @@
+index.html
+擁有存取權的使用者
+未共用
+系統屬性
+類型
+HTML
+大小
+33 KB
+儲存空間使用量
+120 KB
+位置
+資料
+擁有者
+我
+上次修改日期
+我於 下午6:29修改過
+上次開啟日期
+我於 下午6:29開啟過
+建立日期
+2022年5月31日 (使用 Google Drive Web (Unverified))
+新增說明
+檢視者可以下載
 <!DOCTYPE html>
 <html>
 
@@ -21,7 +43,6 @@
 
 	<!-- Load the following for BootstrapVueIcons support -->
 	<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
-
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<style type="text/css">
 		#css_table {
@@ -169,6 +190,9 @@
 							sh template.sh {{result.env.toLowerCase()}} yabo {{result.white_label_id}}
 						</blockquote>
 					</fieldset>
+					<div>
+						<a :href="kibana" target="_blank">查看kibana 確認服務已啟動</a>
+					</div>
 					<fieldset>
 						<legend>信件部分</legend>
 						<div title="信件標題" style="border:1px;border-style: dashed;">MPS
@@ -442,11 +466,11 @@
 									2. <a
 										href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/1_TRIGGER_DI_WL_SYNC/">新白牌deploy成功後
 										請到這個 job, 輸入大寫白牌名稱 並選擇 ACTIVE 啟用</a>
-									3. 再到 <a href="https://kibana.admincod88.com/app/home#/">kibana</a>輸入關鍵字確認服務已啟動
+									3. 再到 <a :href="kibana" target="_blank">kibana</a>輸入關鍵字確認服務已啟動
 
 									</a>
 								</li>
-								<li>登入前台(aetest,Abcd1234)測試可否進入遊戲</li>
+								<li>前後台測試</li>
 								<li>
 									確定可以登上ec網站，就準備寄信到Ｍobile,IMS群
 									<br>
@@ -642,7 +666,11 @@
 					<b-button variant="outline-primary" @click="lowerCase">轉小寫</b-button>
 					<b-button variant="outline-primary" @click="toHump">底線轉駝峰</b-button>
 					<b-button variant="outline-primary" @click="toLine">駝峰轉底線</b-button>
-					<div>{{toolResult}}</div>
+					<b-button variant="outline-primary" @click="toTrim">轉小寫</b-button>
+					<b-button variant="outline-primary" @click="addDoubleQuotes">逗號分隔加雙引號</b-button>
+					<b-button variant="outline-primary" @click="jsonToBulk">jsonToBulk</b-button>
+					<!-- <b-button variant="outline-primary" @click="bulkToJSON">bulkToJSON</b-button> -->
+					<div v-html="toolResult"></div>
 				</b-tab>
 				<b-tab title="Disabled" disabled>
 					<p>I'm a disabled tab!</p>
@@ -657,7 +685,7 @@
 <script>
 	const doubleDash = '--'
 	const comma = ','
-
+	var localStorage = Window.localStorage
 
 	var app = new Vue({
 		el: '#app',
@@ -717,6 +745,30 @@
 						+ '--game_only=true'
 				},
 				deep: true
+			},
+			"result.db_pwd": function (value) {
+				if (this.branch != '') {
+					localStorage.setItem(this.branch, JSON.stringify(this.result));
+					localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
+				}
+			},
+			"result.account_prefix": function (value) {
+				if (this.account_prefix != '' && this.result.currency === '') {
+					if (value.length == 3 && localStorage.getItem(value) && this.result.currency === '') {
+						this.result = JSON.parse(localStorage.getItem(value))
+					}
+				}
+			},
+			branch: function (val) {
+				if (val.length > 3 && localStorage.getItem(this.branch) && this.result.currency === '') {
+					this.result = JSON.parse(localStorage.getItem(this.branch))
+				}
+			},
+		},
+		computed : {
+			kibana: function () {
+				let param = `"${this.result.white_label_id}" AND "syncTableType="`
+				return `https://kibana.admincod88.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'181d0410-dd36-11ec-92f1-c505820dd27e',interval:auto,query:(language:kuery,query:'${param}'),sort:!())`
 			}
 		},
 		methods: {
@@ -753,6 +805,34 @@
 			},
 			toLine() {
 				this.toolResult = this.toolInput.replace(/([A-Z])/g, "_$1").toLowerCase()
+			},
+			clearLocalStorage() {
+				localStorage.clear()
+			},
+			addDoubleQuotes(){
+				this.toolResult = ''
+				this.toolInput.split(',').forEach(element => {
+					this.toolResult = this.toolResult +`"${element.trim()}",`
+				})
+				this.toolResult = this.toolResult.replace(/.$/, "")
+			},
+			toTrim(){
+				this.toolResult = this.toolInput.trim()
+			},
+			jsonToBulk(){
+				this.toolResult = ''
+				let tmpJson = JSON.parse(this.toolInput)
+				console.log(tmpJson)
+				for (const [key, value] of Object.entries(tmpJson)) {
+					this.toolResult += `${key.replace("\"","")}:${value}`+`<br>`
+				}
+			},
+			bulkToJSON(){
+				console.log(this.toolInput)
+				// let tmpJson = JSON.parse(this.toolInput)
+				// for (const [key, value] of Object.entries(this.tmpJson)) {
+				// 	``
+				// }
 			}
 		},
 		mounted() {
