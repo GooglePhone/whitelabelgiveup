@@ -744,6 +744,9 @@
 					localStorage.setItem(this.branch, JSON.stringify(this.result));
 					localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
 				}
+				if(this.result.account_prefix){
+					localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
+				}
 			},
 			"result.account_prefix": function (value) {
 				if (this.account_prefix != '' && this.result.currency === '') {
@@ -851,17 +854,17 @@ rel/3.43_38,
 rel/3.43_p05,
 rel/3.43_r45`
 			}
-			ckEditor = ClassicEditor
-				.create(document.querySelector('#editor'))
-				.then(editor => {
-					this.editor = editor
-					console.log(editor);
-					this.editor.setData(this.note)
-					console.log(this.editor.getData())
-				})
-				.catch(error => {
-					console.error(error);
-				});
+			// ckEditor = ClassicEditor
+			// 	.create(document.querySelector('#editor'))
+			// 	.then(editor => {
+			// 		this.editor = editor
+			// 		console.log(editor);
+			// 		this.editor.setData(this.note)
+			// 		console.log(this.editor.getData())
+			// 	})
+			// 	.catch(error => {
+			// 		console.error(error);
+			// 	});
 		},
 	})
 </script>
