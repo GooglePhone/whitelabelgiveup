@@ -21,6 +21,7 @@
 
 	<!-- Load the following for BootstrapVueIcons support -->
 	<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<style type="text/css">
 		#css_table {
@@ -66,6 +67,10 @@
 
 		.tooltip:hover .tooltiptext {
 			visibility: visible;
+		}
+
+		.ck-editor__editable_inline {
+			min-height: 30rem !important;
 		}
 	</style>
 </head>
@@ -141,12 +146,12 @@
 							<div class="css_tr">
 								<div class="css_td"><label>db_user<label></div>
 								<div class="css_td"><input type="text" v-model="result.db_user"></div>
-								<div class="css_td">跟dba要帳密 James</div>
+								<div class="css_td">跟dba要帳密 James/pinkey</div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>db_pwd<label></div>
 								<div class="css_td"><input type="text" v-model="result.db_pwd"></div>
-								<div class="css_td">跟dba要帳密 James</div>
+								<div class="css_td">跟dba要帳密 James/pinkey</div>
 							</div>
 							<blockquote>跪求 {{result.account_prefix}} db帳密</blockquote>
 						</div>
@@ -160,6 +165,18 @@
 						<legend>將 --account_prefix 後的欄位移除，補上 --game_only=true , 後貼到 jira 單上，供將來新增遊戲用
 						</legend>
 						<blockquote>{{jiar_post}}</blockquote>
+					</fieldset>
+					<fieldset>
+						<legend>AE LOTTY(自開彩)</legend>
+						<a
+							href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
+							間白牌或追加遊戲的時候有AE自開彩時(可看
+							遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
+						</a>
+						<a
+							href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
+							要到Jenkins job輸入白牌代碼並執行
+						</a>
 					</fieldset>
 					<fieldset>
 						<legend>Deploy
@@ -189,18 +206,7 @@
 							<p>Thanks.</p>
 						</div>
 					</fieldset>
-					<fieldset>
-						<legend>AE LOTTY(自開彩)</legend>
-						<a
-							href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
-							間白牌或追加遊戲的時候有AE自開彩時(可看
-							遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
-						</a>
-						<a
-							href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
-							要到Jenkins job輸入白牌代碼並執行
-						</a>
-					</fieldset>
+
 				</b-tab>
 				<b-tab title="白牌指令與說明">
 					<h1>接白牌相關</h1>
@@ -650,6 +656,13 @@
 					<!-- <b-button variant="outline-primary" @click="bulkToJSON">bulkToJSON</b-button> -->
 					<div v-html="toolResult"></div>
 				</b-tab>
+				<b-tab title="版本紀錄">
+					<textarea v-model="version" cols="50" rows="10"></textarea>
+				</b-tab>
+				<b-tab title="記事">
+					<!-- <div id="editor">{{note}}</div> -->
+					<textarea v-model="note" cols="50" rows="10"></textarea>
+				</b-tab>
 				<b-tab title="Disabled" disabled>
 					<p>I'm a disabled tab!</p>
 				</b-tab>
@@ -664,7 +677,6 @@
 	const doubleDash = '--'
 	const comma = ','
 	var localStorage = Window.localStorage
-
 	var app = new Vue({
 		el: '#app',
 		data: {
@@ -689,6 +701,9 @@
 			isChange: true,
 			toolInput: '',
 			toolResult: '',
+			note: '',
+			version: '',
+			editor:'',
 		},
 		watch: {
 			// whenever question changes, this function will run
@@ -742,8 +757,18 @@
 					this.result = JSON.parse(localStorage.getItem(this.branch))
 				}
 			},
+			version: function () {
+				localStorage.setItem('version', this.version);
+			},
+			note: function () {
+				localStorage.setItem('note', this.note);
+			},
+			"editor.getData": function(val){
+				let f = val;
+				console.log(f)
+			}
 		},
-		computed : {
+		computed: {
 			kibana: function () {
 				let param = `"${this.result.white_label_id}" AND "syncTableType="`
 				return `https://kibana.admincod88.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'181d0410-dd36-11ec-92f1-c505820dd27e',interval:auto,query:(language:kuery,query:'${param}'),sort:!())`
@@ -787,25 +812,25 @@
 			clearLocalStorage() {
 				localStorage.clear()
 			},
-			addDoubleQuotes(){
+			addDoubleQuotes() {
 				this.toolResult = ''
 				this.toolInput.split(',').forEach(element => {
-					this.toolResult = this.toolResult +`"${element.trim()}",`
+					this.toolResult = this.toolResult + `"${element.trim()}",`
 				})
 				this.toolResult = this.toolResult.replace(/.$/, "")
 			},
-			toTrim(){
+			toTrim() {
 				this.toolResult = this.toolInput.trim()
 			},
-			jsonToBulk(){
+			jsonToBulk() {
 				this.toolResult = ''
 				let tmpJson = JSON.parse(this.toolInput)
 				console.log(tmpJson)
 				for (const [key, value] of Object.entries(tmpJson)) {
-					this.toolResult += `${key.replace("\"","")}:${value}`+`<br>`
+					this.toolResult += `${key.replace("\"", "")}:${value}` + `<br>`
 				}
 			},
-			bulkToJSON(){
+			bulkToJSON() {
 				console.log(this.toolInput)
 				// let tmpJson = JSON.parse(this.toolInput)
 				// for (const [key, value] of Object.entries(this.tmpJson)) {
@@ -814,11 +839,31 @@
 			}
 		},
 		mounted() {
-			// this.gradleValue = this.start
-			// this.addParam(this.env, this.env, 'env')
+			let setValue = ['version', 'note'];
+			setValue.forEach(e => {
+				if (localStorage.getItem(e)) {
+					Reflect.set(this, e, localStorage.getItem(e))
+				}
+			})
+			if (!localStorage.getItem('version')) {
+				this.version = `rel/3.43,
+rel/3.43_38,
+rel/3.43_p05,
+rel/3.43_r45`
+			}
+			ckEditor = ClassicEditor
+				.create(document.querySelector('#editor'))
+				.then(editor => {
+					this.editor = editor
+					console.log(editor);
+					this.editor.setData(this.note)
+					console.log(this.editor.getData())
+				})
+				.catch(error => {
+					console.error(error);
+				});
 		},
 	})
-	// git rebase origin/master -i
 </script>
 
 </html>
