@@ -91,6 +91,12 @@
 						</fieldset>
 					</fieldset>
 					<fieldset>
+						<legend>
+							<b-form-select v-model="result.account_prefix" :options="tmpList" size="sm" class="mt-3">
+							</b-form-select>
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<b-button variant="outline-primary" @click="saveTmpData">更新/儲存資料</b-button>
+						</legend>
 						<div id="css_table">
 							<div class="css_tr">
 								<div class="css_td">參數名稱</div>
@@ -166,6 +172,14 @@
 						</legend>
 						<blockquote>{{jiar_post}}</blockquote>
 					</fieldset>
+
+					<fieldset>
+						<legend>Deploy
+						</legend>
+						<blockquote>
+							sh template.sh {{result.env.toLowerCase()}} yabo {{result.white_label_id}}
+						</blockquote>
+					</fieldset>
 					<fieldset>
 						<legend>AE LOTTY(自開彩)</legend>
 						<a
@@ -179,15 +193,11 @@
 						</a>
 					</fieldset>
 					<fieldset>
-						<legend>Deploy
-						</legend>
-						<blockquote>
-							sh template.sh {{result.env.toLowerCase()}} yabo {{result.white_label_id}}
-						</blockquote>
+						<legend>查看kibana</legend>
+						<div>
+							<a :href="kibana" target="_blank">查看kibana 確認服務已啟動</a>
+						</div>
 					</fieldset>
-					<div>
-						<a :href="kibana" target="_blank">查看kibana 確認服務已啟動</a>
-					</div>
 					<fieldset>
 						<legend>信件部分</legend>
 						<div title="信件標題" style="border:1px;border-style: dashed;">MPS
@@ -673,6 +683,14 @@
 
 
 </body>
+<script type="importmap">
+	{
+	  "importmap": {
+		"vue": "https://unpkg.com/browse/vue@3.2.2/dist/vue.runtime.esm-browser.js",
+		"class": "https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-vue2"
+	  }
+	}
+</script>
 <script>
 	const doubleDash = '--'
 	const comma = ','
@@ -703,7 +721,8 @@
 			toolResult: '',
 			note: '',
 			version: '',
-			editor:'',
+			editor: '',
+			tmpList: [],
 		},
 		watch: {
 			// whenever question changes, this function will run
@@ -740,11 +759,7 @@
 				deep: true
 			},
 			"result.db_pwd": function (value) {
-				if (this.branch != '') {
-					localStorage.setItem(this.branch, JSON.stringify(this.result));
-					localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
-				}
-				if(this.result.account_prefix){
+				if (this.result.account_prefix) {
 					localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
 				}
 			},
@@ -766,7 +781,7 @@
 			note: function () {
 				localStorage.setItem('note', this.note);
 			},
-			"editor.getData": function(val){
+			"editor.getData": function (val) {
 				let f = val;
 				console.log(f)
 			}
@@ -839,6 +854,9 @@
 				// for (const [key, value] of Object.entries(this.tmpJson)) {
 				// 	``
 				// }
+			},
+			saveTmpData() {
+				localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
 			}
 		},
 		mounted() {
@@ -848,6 +866,13 @@
 					Reflect.set(this, e, localStorage.getItem(e))
 				}
 			})
+			for (var i = 0; i < localStorage.length; i++) {
+				if (!setValue.includes(localStorage.key(i))) {
+
+					this.tmpList.push(localStorage.key(i))
+				}
+			}
+			console.log(this.tmpList)
 			if (!localStorage.getItem('version')) {
 				this.version = `rel/3.43,
 rel/3.43_38,
