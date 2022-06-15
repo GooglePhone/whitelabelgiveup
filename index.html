@@ -92,7 +92,7 @@
 					</fieldset>
 					<fieldset>
 						<legend>
-							<b-form-select v-model="result.account_prefix" :options="tmpList" size="sm" class="mt-3">
+							<b-form-select v-model="result.account_prefix" :options="tmpList" size="sm" class="mt-3" @change="changeData">
 							</b-form-select>
 							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 							<b-button variant="outline-primary" @click="saveTmpData">更新/儲存資料</b-button>
@@ -182,12 +182,12 @@
 					</fieldset>
 					<fieldset>
 						<legend>AE LOTTY(自開彩)</legend>
-						<a target="_blank"
+						<a  target=”_blank”
 							href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
 							間白牌或追加遊戲的時候有AE自開彩時(可看
 							遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
 						</a>
-						<a target="_blank"
+						<a  target=”_blank”
 							href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
 							要到Jenkins job輸入白牌代碼並執行
 						</a>
@@ -223,14 +223,14 @@
 					<fieldset>
 						<legend>取得白牌相關資訊:</legend>
 						<div>
-							<p><a target="_blank"
+							<p><a target=”_blank”
 									href="https://docs.google.com/spreadsheets/d/1A7gCHLcWuDf8I0zOWgoI_llZFGPY614hX2JzO5rUSZw/edit#gid=0">
 									white label文件(內含各白牌名稱、white label code、對接文件與 jira 單等) </a>
 							<p>
 
-							<p><a target="_blank" href="https://mship.admincod88.com/">總後台</a>
+							<p><a  target=”_blank” href="https://mship.admincod88.com/">總後台</a>
 							<p>
-							<p><a target="_blank"  href="https://devops-portal.admincod88.com/accounts/login/">DevOps Portal</a>
+							<p><a  target=”_blank” href="https://devops-portal.admincod88.com/accounts/login/">DevOps Portal</a>
 							<p>
 
 						</div>
@@ -385,7 +385,7 @@
 					</fieldset>
 					<fieldset style="margin-top: 1rem">
 						<b>** 關於Sbobet,目前有兩隻在接白牌或新遊戲的時候,要看一下文件,新的都是跑Sbobet2,開頭的</b>
-						<p>建代理的參數 casinoTableLimit 基本不需要變動,要確認請看文件 <a href="https://imgur.com/a/uqBYiSc"
+						<p>建代理的參數 casinoTableLimit 基本不需要變動,要確認請看文件 <a target=”_blank” href="https://imgur.com/a/uqBYiSc"
 								target="_blank">來源</a></p>
 						<p>基本上與原有流程相同</p>
 					</fieldset>
@@ -436,7 +436,7 @@
 							<legend>MPS部署</legend>
 							<ol type="1">
 								<li>
-									<blockquote><a
+									<blockquote><a target=”_blank”
 											href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/newJob">
 											到mps底下的script點選newItem
 										</a></blockquote>
@@ -455,9 +455,9 @@
 									<a href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/"
 										target="_blank">
 										建新白牌時(build,deploy後) 我們最後要多加一個 啟用 DI 服務的步驟 再請大家注意</a>
-									1. <a
+									1. <a target=”_blank”
 										href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/0_INIT_WL_JWT/">新增白牌的JWT</a>
-									2. <a
+									2. <a target=”_blank”
 										href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/1_TRIGGER_DI_WL_SYNC/">新白牌deploy成功後
 										請到這個 job, 輸入大寫白牌名稱 並選擇 ACTIVE 啟用</a>
 									3. 再到 <a :href="kibana" target="_blank">kibana</a>輸入關鍵字確認服務已啟動
@@ -493,7 +493,7 @@
 							</ol>
 							<blockquote>
 								有ae樂透自開彩的時候
-								要到<a target="_blank"
+								要到<a target=”_blank”
 									href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
 									Jenkins,執行job
 								</a>
@@ -642,12 +642,12 @@
 						</fieldset>
 						<fieldset>
 							<legend>AE LOTTY(自開彩)</legend>
-							<a target="_blank"
+							<a
 								href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
 								間白牌或追加遊戲的時候有AE自開彩時(可看
 								遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
 							</a>
-							<a target="_blank"
+							<a
 								href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
 								要到Jenkins job輸入白牌代碼並執行
 							</a>
@@ -812,6 +812,9 @@
 			},
 			resetResult() {
 				this.result = this.info
+			},
+			changeData(value){
+				this.result = JSON.parse(localStorage.getItem(value))
 			},
 			upperCase() {
 				this.toolResult = this.toolInput.toUpperCase()
