@@ -92,10 +92,29 @@
 					</fieldset>
 					<fieldset>
 						<legend>
-							<b-form-select v-model="result.account_prefix" :options="tmpList" size="sm" class="mt-3" @change="changeData">
-							</b-form-select>
-							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-							<b-button variant="outline-primary" @click="saveTmpData">更新/儲存資料</b-button>
+							<div>
+								<div>
+									<div v-if="isfilterSelect" style="width:10%;display : inline-block">
+										<b-form-input list="my-list-id"  @change="changeData" ></b-form-input>
+										<datalist id="my-list-id" autocomplete="true">
+										  <option v-for="tmp in tmpList" v-model="result.account_prefix">{{ tmp }}</option>
+										</datalist>
+									</div>
+									<div v-if="!isfilterSelect" style="display : inline-block">
+										<b-form-select v-model="result.account_prefix" :options="tmpList" size="sm" class="mt-3" @change="changeData">
+										</b-form-select>
+									</div>
+									<b-button variant="outline-info" @click="isfilterSelect = !isfilterSelect" style="margin-left:2rem">
+										{{isfilterSelect ? '轉換一般下拉選單' : '轉換有filter的下拉選單'}}
+									</b-button>
+								</div>
+
+								<div style="padding-top:1em">	
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<b-button variant="outline-primary" @click="saveTmpData">更新/儲存資料</b-button>
+									<b-button variant="outline-danger" @click="deleteTmpData">刪除儲存資料</b-button>
+								</div>
+							  </div>
 						</legend>
 						<div id="css_table">
 							<div class="css_tr">
@@ -723,6 +742,7 @@
 			version: '',
 			editor: '',
 			tmpList: [],
+			isfilterSelect:true,
 		},
 		watch: {
 			// whenever question changes, this function will run
@@ -814,7 +834,9 @@
 				this.result = this.info
 			},
 			changeData(value){
-				this.result = JSON.parse(localStorage.getItem(value))
+				if(value){
+					this.result = JSON.parse(localStorage.getItem(value))
+				}
 			},
 			upperCase() {
 				this.toolResult = this.toolInput.toUpperCase()
@@ -846,7 +868,6 @@
 			jsonToBulk() {
 				this.toolResult = ''
 				let tmpJson = JSON.parse(this.toolInput)
-				console.log(tmpJson)
 				for (const [key, value] of Object.entries(tmpJson)) {
 					this.toolResult += `${key.replace("\"", "")}:${value}` + `<br>`
 				}
@@ -860,6 +881,11 @@
 			},
 			saveTmpData() {
 				localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
+			},
+			deleteTmpData(){
+				if(this.result.account_prefix && confirm('確認刪除?')){
+					localStorage.removeItem(this.result.account_prefix);
+				}
 			}
 		},
 		mounted() {
@@ -875,7 +901,6 @@
 					this.tmpList.push(localStorage.key(i))
 				}
 			}
-			console.log(this.tmpList)
 			if (!localStorage.getItem('version')) {
 				this.version = `rel/3.43,
 rel/3.43_38,
