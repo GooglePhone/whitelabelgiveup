@@ -813,7 +813,7 @@
 		},
 		computed: {
 			kibana: function () {
-				let param = `"${this.result.white_label_id}" AND "syncTableType="`
+				let param = `"doSync done" AND "${this.result.white_label_id}" `
 				return `https://kibana.admincod88.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'181d0410-dd36-11ec-92f1-c505820dd27e',interval:auto,query:(language:kuery,query:'${param}'),sort:!())`
 			}
 		},
