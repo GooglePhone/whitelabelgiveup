@@ -606,7 +606,7 @@
 					<div>
 						<fieldset>
 							<legend>
-								站點追加遊戲
+								白牌追加遊戲
 							</legend>
 							兩部份：
 							<ol>
@@ -622,7 +622,7 @@
 						</fieldset>
 
 						<fieldset>
-							<legend>平台加新遊戲
+							<legend>遊戲商加新遊戲(新遊戲上線)
 							</legend>
 							<ol>
 								<li>mps-flyway改sql去 rpt max min不用填</li>
@@ -633,6 +633,8 @@
 									<p>****.1 是給個白牌用ㄉ
 										.0是大家白牌共用ㄉ</p>
 								</li>
+								<li>請 [~gio.liao]協助補圖，謝謝</li>
+									<li>提交程式碼,到git lab上Merge Request</li>
 								<li>到<a href="https://jenkins.stgdevops.site/view/MPS/job/MPS/job/SCRIPT/job/AE/">AE
 										Jenkins</a>部版
 									MPS_AE_BUILD_BE (build -> deploy)
@@ -661,7 +663,7 @@
 									</li>
 								</ol>
 								然後到<a href="https://ae.stgdevops.site/">前台網站</a>看看是否有遊戲
-								有的話把jira單work flow改為QA(Stag) 然後轉給Kevin (or crystal)
+								有的話把jira單work flow改為QA(Stag) 然後轉給Freedom/Kevin (or crystal)
 							</fieldset>
 						</fieldset>
 						<fieldset>
@@ -676,28 +678,41 @@
 								要到Jenkins job輸入白牌代碼並執行
 							</a>
 						</fieldset>
+						<fieldset>
+							<legend>修改限紅</legend>
+							<a
+								href="https://wiki.nexiosoft.com/display/MPS/GP+BetLimit">
+								參考限紅wiki,git的歷程
+							</a>
+							<span style="color:red">PS:AWC的限紅改完的時候 如果是更改全站, build完deploy之前須通知alice,個人可以直接deploy</span>
+						</fieldset>
 					</div>
 				</b-tab>
 				<b-tab title="小工具">
-					<textarea v-model="toolInput" cols="50" rows="10"></textarea>
+					<div>
+						<textarea v-model="toolInput" style="width: 100%;" rows="20"></textarea>
+					</div>
 					<b-button variant="outline-primary" @click="upperCase">轉大寫</b-button>
 					<b-button variant="outline-primary" @click="lowerCase">轉小寫</b-button>
 					<b-button variant="outline-primary" @click="toHump">底線轉駝峰</b-button>
 					<b-button variant="outline-primary" @click="toLine">駝峰轉底線</b-button>
 					<b-button variant="outline-primary" @click="toTrim">去空白</b-button>
 					<b-button variant="outline-primary" @click="addDoubleQuotes">逗號分隔加雙引號</b-button>
+					<b-button variant="outline-primary" @click="spaceToUnderLine">空白變底線</b-button>
+					<b-button variant="outline-primary" @click="jsonBeautifier">json Beautifier</b-button>
 					<b-button variant="outline-primary" @click="jsonToBulk">jsonToBulk</b-button>
 					<!-- <b-button variant="outline-primary" @click="bulkToJSON">bulkToJSON</b-button> -->
-					<div v-html="toolResult"></div>
-				</b-tab>
-				<b-tab title="版本紀錄">
-					<textarea v-model="version" cols="50" rows="10"></textarea>
+					<div style="padding-top: 1rem;">
+						<pre v-html="toolResult"></pre>
+					</div>
 				</b-tab>
 				<b-tab title="記事">
-					<!-- <div id="editor">{{note}}</div> -->
-					<textarea v-model="note" cols="50" rows="10"></textarea>
+					<div>
+						<textarea v-model="note" style="width: 100%;" rows="20"></textarea>
+					</div>、
 				</b-tab>
 				<b-tab title="Disabled" disabled>
+					<p>table:game : status 0為不可玩,1可玩,isenabled:true 為可見,false不可見</p>
 					<p>I'm a disabled tab!</p>
 				</b-tab>
 			</b-tabs>
@@ -744,10 +759,11 @@
 			toolInput: '',
 			toolResult: '',
 			note: '',
-			version: '',
 			editor: '',
 			tmpList: [],
 			isfilterSelect: true,
+			disabledHint:true,
+			jenkinsUrl: '',
 		},
 		watch: {
 			// whenever question changes, this function will run
@@ -795,7 +811,20 @@
 					}
 				}
 			},
-			branch: function (val) {
+			"result.env":function(value){
+				switch(value){
+					case 'PROD':
+					this.jenkinsUrl = "https://jenkins.admincod88.com";
+					break;
+					case 'UAT':
+					this.jenkinsUrl = "https://ojs.uatdevops.site";
+					break;
+					case 'STG':
+					this.jenkinsUrl = "https://jenkins.stgdevops.site";
+					break;
+				}
+			}
+			,branch: function (val) {
 				if (val.length > 3 && localStorage.getItem(this.branch) && this.result.currency === '') {
 					this.result = JSON.parse(localStorage.getItem(this.branch))
 				}
@@ -818,11 +847,6 @@
 			}
 		},
 		methods: {
-			// addParam(newValue, oldValue, param) {
-			// 	let newOne = `${doubleDash}${param}=${newValue.trim()}${comma}`
-			// 	let oldOne = `${doubleDash}${param}=${oldValue.trim()}${comma}`
-			// 	this.gradleValue = this.gradleValue.replace(oldOne, "") + newOne
-			// },
 			addHttps(value) {
 				if (value.indexOf('https') == -1 || value.indexOf('http') == -1) {
 					return 'https://' + value
@@ -867,7 +891,10 @@
 				})
 				this.toolResult = this.toolResult.replace(/.$/, "")
 			},
-			toTrim() {
+			spaceToUnderLine(){
+				this.toolResult = this.toolInput.replace(/ /g, "_")
+			}
+			,toTrim() {
 				this.toolResult = this.toolInput.trim()
 			},
 			jsonToBulk() {
@@ -884,7 +911,10 @@
 				// 	``
 				// }
 			},
-			saveTmpData() {
+			jsonBeautifier(){
+				this.toolResult = JSON.stringify(JSON.parse(this.toolInput.trim()), null, 4);
+			}
+			,saveTmpData() {
 				localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
 			},
 			deleteTmpData() {
@@ -903,23 +933,6 @@
 			this.tmpList = Object.keys(localStorage).sort().filter(function(e){
 				return !setValue.includes(e)
 			})
-			if (!localStorage.getItem('version')) {
-				this.version = `rel/3.43,
-rel/3.43_38,
-rel/3.43_p05,
-rel/3.43_r45`
-			}
-			// ckEditor = ClassicEditor
-			// 	.create(document.querySelector('#editor'))
-			// 	.then(editor => {
-			// 		this.editor = editor
-			// 		console.log(editor);
-			// 		this.editor.setData(this.note)
-			// 		console.log(this.editor.getData())
-			// 	})
-			// 	.catch(error => {
-			// 		console.error(error);
-			// 	});
 		},
 	})
 </script>
