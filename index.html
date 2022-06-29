@@ -424,6 +424,8 @@
 								<li>然後一個一個遊戲測試{XXX}GetBetHistorySchedulerManualT</li>
 								<li>再貼到game-record-flyway/profile/prod/db/migration/R__InitData.sql</li>
 								<li>也要修改下面的config</li>
+								<li>到<a href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod_SCRIPT/" target="_blank">
+									Jenkins</a>record (build -> deploy)</li>
 							</ol>
 						</fieldset>
 					</fieldset>
@@ -675,7 +677,9 @@
 								<li>執行--game的gradle指令，然後到此站點的R__Walletaccount.sql找到此遊戲,測試</li>
 								<li>record的部分找到mps-parent底下的.gen裡面站名的Record.sql，貼到Record專案的local測試
 									測試完畢後貼到prod,含遊戲資訊、config</li>
-								<li>到<a href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/">
+								<li>到<a href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod_SCRIPT/" target="_blank">
+										Jenkins</a>record (build -> deploy)</li></li>
+								<li>到<a href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/" target="_blank">
 										Jenkins</a>部版追加的站點(build -> deploy)</li>
 										<li>
 								有ae樂透自開彩的時候
@@ -782,6 +786,7 @@
 								<blockquote>stg-vipphp-ims-*</blockquote>
 							</li>
 							<li>查詢條件為：addNewGames，看有沒有對應的AE_LOTTO ID</li>
+							<li>然後重新部署</li>
 						</ol>
 						**以下可以import 到postman**
 						<blockquote>curl --location --request PUT 'http://localhost:9009/local-ims/api/v1/ops/addNewGames' \
