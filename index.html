@@ -480,7 +480,7 @@
 										建新白牌時(build,deploy後) 我們最後要多加一個 啟用 DI 服務的步驟 再請大家注意</a>
 									1. <a target="_blank"
 										href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/0_INIT_WL_JWT/">新增白牌的JWT</a>
-										2. <a target="_blank"
+									2. <a target="_blank"
 										href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/1_TRIGGER_DI_WL_SYNC/">新白牌deploy成功後
 										請到這個 job, 輸入大寫白牌名稱 並選擇 ACTIVE 啟用</a>
 									3. 再到 <a :href="kibana" target="_blank">kibana</a>輸入關鍵字確認服務已啟動
@@ -514,18 +514,64 @@
 									</fieldset>
 								</li>
 							</ol>
-							<blockquote>
-								有ae樂透自開彩的時候
-								要到<a target="_blank"
-									href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
-									Jenkins,執行job
-								</a>
-								然後重新部署
-							</blockquote>
 						</fieldset>
-
 					</fieldset>
 					<div>
+
+						<fieldset>
+							<legend>AE LOTTY(自開彩) 加完要重新部署</legend>
+							<a
+								href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
+								間白牌或追加遊戲的時候有AE自開彩時(可看
+								遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
+							</a>
+							<a
+								href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
+								要到Jenkins job輸入白牌代碼並執行
+							</a>
+						</fieldset>
+					</div>
+				</b-tab>
+				<b-tab title="常見單子流程">
+					<b-dropdown id="dropdown-offset" offset="25" text="請選擇" class="m-2">
+						<div v-for="(value, key) in normalDescInfo ">
+							<b-dropdown-item @click="toNormalDesc(key)">{{key}}</b-dropdown-item>
+						</div>
+					</b-dropdown>
+					<b-form-input list="normal-list-id" @change="toNormalDesc"></b-form-input>
+					<datalist id="normal-list-id">
+						<option v-for="(value, key) in normalDescInfo" @click="toNormalDesc(key)">{{ key }}
+						</option>
+					</datalist>
+					<div style="margin-top:1rem" v-html="normalDesc">
+					</div>
+				</b-tab>
+				<b-tab title="小工具">
+					<div>
+						<textarea v-model="toolInput" style="width: 100%;" rows="20"></textarea>
+					</div>
+					<b-button variant="outline-primary" @click="upperCase">轉大寫</b-button>
+					<b-button variant="outline-primary" @click="lowerCase">轉小寫</b-button>
+					<b-button variant="outline-primary" @click="toHump">底線轉駝峰</b-button>
+					<b-button variant="outline-primary" @click="toLine">駝峰轉底線</b-button>
+					<b-button variant="outline-primary" @click="toTrim">去空白</b-button>
+					<b-button variant="outline-primary" @click="addDoubleQuotes">逗號分隔加雙引號</b-button>
+					<b-button variant="outline-primary" @click="spaceToUnderLine">空白變底線</b-button>
+					<b-button variant="outline-primary" @click="jsonBeautifier">json Beautifier</b-button>
+					<b-button variant="outline-primary" @click="jsonToBulk">jsonToBulk</b-button>
+					<!-- <b-button variant="outline-primary" @click="bulkToJSON">bulkToJSON</b-button> -->
+					<div style="padding-top: 1rem;">
+						<pre v-html="toolResult"></pre>
+					</div>
+				</b-tab>
+				<b-tab title="記事">
+					<div>
+						<textarea v-model="note" style="width: 100%;" rows="20"></textarea>
+					</div>
+				</b-tab>
+				<b-tab title="git">
+					<div
+						style="border-width:3px;border-style:dashed;border-color:#FFAC55;padding:5px;margin-top: 2rem;">
 						<fieldset>
 							<legend>git部分</legend>
 							切換分支：git checkout 單號
@@ -602,26 +648,55 @@
 							</a>的menu選擇Merge Request,選擇剛剛push的資料
 						</fieldset>
 					</div>
-
-					<div>
-						<fieldset>
+				</b-tab>
+				<b-tab title="Disabled" disabled>
+					<p>table:game : status 0為不可玩,1可玩,isenabled:true 為可見,false不可見</p>
+					<p>I'm a disabled tab!</p>
+				</b-tab>
+			</b-tabs>
+		</div>
+	</div>
+</body>
+<script type="importmap">
+	{
+	  "importmap": {
+		"vue": "https://unpkg.com/browse/vue@3.2.2/dist/vue.runtime.esm-browser.js",
+		"class": "https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-vue2"
+	  }
+	}
+</script>
+<script>
+	var normalDesc = {
+		'追加遊戲': `	<fieldset>
 							<legend>
 								白牌追加遊戲
 							</legend>
-							兩部份：
 							<ol>
 								<li>執行--game的gradle指令，然後到此站點的R__Walletaccount.sql找到此遊戲,測試</li>
 								<li>record的部分找到mps-parent底下的.gen裡面站名的Record.sql，貼到Record專案的local測試
 									測試完畢後貼到prod,含遊戲資訊、config</li>
 								<li>到<a href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/">
 										Jenkins</a>部版追加的站點(build -> deploy)</li>
+										<li>
+								有ae樂透自開彩的時候
+								要到<a target="_blank"
+									href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
+									Jenkins,執行job
+								</a>
+								然後重新部署
+							</li>
+							<li>
+								然後到白牌前台網站看看是否有遊戲
+							</li>
+							</ol>
 								<li>然後要去slack的as-ims-maintenance講部版情況</li>
 								<li>把jira單回給報告人,追加遊戲不用QA</li>
-							</ol>
+							
 							<blockquote>例如 V05_789BET PROD deployed - 追加RCB</blockquote>
 						</fieldset>
-
-						<fieldset>
+						
+						`,
+		'新遊戲上線': `						<fieldset>
 							<legend>遊戲商加新遊戲(新遊戲上線)
 							</legend>
 							<ol>
@@ -634,14 +709,16 @@
 										.0是大家白牌共用ㄉ</p>
 								</li>
 								<li>請 [~gio.liao]協助補圖，謝謝</li>
-									<li>提交程式碼,到git lab上Merge Request</li>
+								<li>提交程式碼,到git lab上Merge Request</li>
 								<li>到<a href="https://jenkins.stgdevops.site/view/MPS/job/MPS/job/SCRIPT/job/AE/">AE
 										Jenkins</a>部版
 									MPS_AE_BUILD_BE (build -> deploy)
 								</li>
+								<li>然後到前台網站看看是否有遊戲 有的話把jira單work flow改為QA(Stag) 然後轉給Freedom</li>
 							</ol>
-							<fieldset>
-								<legend>加新遊戲top10</legend>
+						</fieldset>
+						<fieldset>
+								<legend>加新遊戲top10(基本上是AE Gaming)</legend>
 								<ol>
 									<li>到單子下面找SQL附件,查看SQL有無錯誤</li>
 									<li>依照幣別把SQL填入
@@ -654,6 +731,10 @@
 										<blockquote>./gradlew bootRun
 											-Pargs=--env=PROD,--execution_mode=DEFAULT_TOP_10_AE_GAMING_GAMES
 										</blockquote>
+										 OR
+										 <blockquote>
+										 ./gradlew --daemon --parallel bootRun -Pargs=--env=PROD,--execution_mode=DEFAULT_TOP_10_AE_GAMING_GAMES
+										</blockquote>
 									</li>
 									<li>請 [~gio.liao]協助補圖，謝謝</li>
 									<li>提交程式碼,到git lab上Merge Request</li>
@@ -665,69 +746,89 @@
 								然後到<a href="https://ae.stgdevops.site/">前台網站</a>看看是否有遊戲
 								有的話把jira單work flow改為QA(Stag) 然後轉給Freedom/Kevin (or crystal)
 							</fieldset>
-						</fieldset>
-						<fieldset>
-							<legend>AE LOTTY(自開彩) 加完要重新部署</legend>
-							<a
-								href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
-								間白牌或追加遊戲的時候有AE自開彩時(可看
-								遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
-							</a>
-							<a
-								href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
-								要到Jenkins job輸入白牌代碼並執行
-							</a>
-						</fieldset>
-						<fieldset>
+						`,
+		'修改限紅': `						<fieldset>
 							<legend>修改限紅</legend>
-							<a
-								href="https://wiki.nexiosoft.com/display/MPS/GP+BetLimit">
+							<a href="https://wiki.nexiosoft.com/display/MPS/GP+BetLimit">
 								參考限紅wiki,git的歷程
 							</a>
 							<span style="color:red">PS:AWC的限紅改完的時候 如果是更改全站, build完deploy之前須通知alice,個人可以直接deploy</span>
-						</fieldset>
-					</div>
-				</b-tab>
-				<b-tab title="小工具">
-					<div>
-						<textarea v-model="toolInput" style="width: 100%;" rows="20"></textarea>
-					</div>
-					<b-button variant="outline-primary" @click="upperCase">轉大寫</b-button>
-					<b-button variant="outline-primary" @click="lowerCase">轉小寫</b-button>
-					<b-button variant="outline-primary" @click="toHump">底線轉駝峰</b-button>
-					<b-button variant="outline-primary" @click="toLine">駝峰轉底線</b-button>
-					<b-button variant="outline-primary" @click="toTrim">去空白</b-button>
-					<b-button variant="outline-primary" @click="addDoubleQuotes">逗號分隔加雙引號</b-button>
-					<b-button variant="outline-primary" @click="spaceToUnderLine">空白變底線</b-button>
-					<b-button variant="outline-primary" @click="jsonBeautifier">json Beautifier</b-button>
-					<b-button variant="outline-primary" @click="jsonToBulk">jsonToBulk</b-button>
-					<!-- <b-button variant="outline-primary" @click="bulkToJSON">bulkToJSON</b-button> -->
-					<div style="padding-top: 1rem;">
-						<pre v-html="toolResult"></pre>
-					</div>
-				</b-tab>
-				<b-tab title="記事">
-					<div>
-						<textarea v-model="note" style="width: 100%;" rows="20"></textarea>
-					</div>
-				</b-tab>
-				<b-tab title="Disabled" disabled>
-					<p>table:game : status 0為不可玩,1可玩,isenabled:true 為可見,false不可見</p>
-					<p>I'm a disabled tab!</p>
-				</b-tab>
-			</b-tabs>
-		</div>
-	</div>
+						</fieldset>`,
+		'手動添加AE_LOTTO': `					<fieldset>
+						<legend>
+							手動添加AE_LOTTO
+						</legend>
+						<ol type="1">
+							<li>
+								找到白牌後台url,取的API路徑 ex：
+								<blockquote>https://vipphp-boapi.stgdevops.site/vipphp-ims/</blockquote>
+							</li>
+							<li>
+								使用POSTMAN送出PUT請求
+								ex: URL:<br>
+								https://vipphp-boapi.stgdevops.site/vipphp-ims/api/v1/ops/addNewGames<br>
+								raw data:<br>
+								<blockquote>
+									{<br>
+									"gameProvider": "AE_LOTTO_AE_LOTTO",<br>
+									"gameGroup": "PRIVATE",<br>
+									"walletid": "AE_LOTTO",<br>
+									"gameTypes": ["SELF_OPEN_GAME_PROVIDER","SELF_OPEN_VENDOR","FAKE_OFFICIAL"]<br>
+									}
+								</blockquote>
+							</li>
+							<li>
+								到kibana,使用filter 如:
+								<blockquote>stg-vipphp-ims-*</blockquote>
+							</li>
+							<li>查詢條件為：addNewGames，看有沒有對應的AE_LOTTO ID</li>
+						</ol>
+						**以下可以import 到postman**
+						<blockquote>curl --location --request PUT 'http://localhost:9009/local-ims/api/v1/ops/addNewGames' \
+						--header 'Content-Type: application/json' \
+						--data-raw '{
+						"gameProvider": "AE_LOTTO_AE_LOTTO",
+						"gameGroup": "PRIVATE",
+						"walletid": "AE_LOTTO",
+						"gameTypes": ["SELF_OPEN_GAME_PROVIDER","SELF_OPEN_VENDOR","FAKE_OFFICIAL"]
+						}'</blockquote>
+					</fieldset>`,
+							'更改前/後台域名':`					<fieldset>
+						<legend>舊域名取代為新域名(參考git歷程)</legend>
 
-
-
-</body>
-<script type="importmap">
-	{
-	  "importmap": {
-		"vue": "https://unpkg.com/browse/vue@3.2.2/dist/vue.runtime.esm-browser.js",
-		"class": "https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-vue2"
-	  }
+						<ol>
+							<li>
+								修改 <br>
+								../../../mps-common/profile/白牌底下的 mps.yaml,<br>
+								../../../mps-thirdparty/profile/白牌底下的 third_party_payment.yaml
+							</li>
+							<li>
+								新增SQL 到<a
+									href="https://docs.google.com/spreadsheets/d/1iJDOHG6i3R_bq_ezuIdOPqHw-uv94dZIpkQo5MYSBBY/edit#gid=622251053">excel</a>
+								添加版本號<br>
+								../../../mps-flyway/profile/白牌底下的/db/migration<br>
+								V........1__update_domain.sql
+							</li>
+							<li>
+								發MR到master後, 發單子給前端值日生
+								(要部版時請通知,要一起部版)
+							</li>
+							<li>
+								等到前端完成後cherry-pick到rel然後build->deploy
+							</li>
+						</ol>
+					</fieldset>`,
+					'修改平台名稱':`					<fieldset>
+						<legend>
+							修改平台名稱(參考git歷程)
+						</legend>
+						<ol>
+							<li>修改專案mps的 mps.yml的applicationName</li>
+						</ol>
+						<ol>
+							<li>修改專案deploy的 build.sh  的tagVer</li>
+						</ol>
+					</fieldset>`
 	}
 </script>
 <script>
@@ -762,8 +863,10 @@
 			editor: '',
 			tmpList: [],
 			isfilterSelect: true,
-			disabledHint:true,
+			disabledHint: true,
 			jenkinsUrl: '',
+			normalDescInfo: normalDesc,
+			normalDesc: '',
 		},
 		watch: {
 			// whenever question changes, this function will run
@@ -811,20 +914,20 @@
 					}
 				}
 			},
-			"result.env":function(value){
-				switch(value){
+			"result.env": function (value) {
+				switch (value) {
 					case 'PROD':
-					this.jenkinsUrl = "https://jenkins.admincod88.com";
-					break;
+						this.jenkinsUrl = "https://jenkins.admincod88.com";
+						break;
 					case 'UAT':
-					this.jenkinsUrl = "https://ojs.uatdevops.site";
-					break;
+						this.jenkinsUrl = "https://ojs.uatdevops.site";
+						break;
 					case 'STG':
-					this.jenkinsUrl = "https://jenkins.stgdevops.site";
-					break;
+						this.jenkinsUrl = "https://jenkins.stgdevops.site";
+						break;
 				}
 			}
-			,branch: function (val) {
+			, branch: function (val) {
 				if (val.length > 3 && localStorage.getItem(this.branch) && this.result.currency === '') {
 					this.result = JSON.parse(localStorage.getItem(this.branch))
 				}
@@ -891,10 +994,10 @@
 				})
 				this.toolResult = this.toolResult.replace(/.$/, "")
 			},
-			spaceToUnderLine(){
+			spaceToUnderLine() {
 				this.toolResult = this.toolInput.replace(/ /g, "_")
 			}
-			,toTrim() {
+			, toTrim() {
 				this.toolResult = this.toolInput.trim()
 			},
 			jsonToBulk() {
@@ -911,16 +1014,19 @@
 				// 	``
 				// }
 			},
-			jsonBeautifier(){
+			jsonBeautifier() {
 				this.toolResult = JSON.stringify(JSON.parse(this.toolInput.trim()), null, 4);
 			}
-			,saveTmpData() {
+			, saveTmpData() {
 				localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
 			},
 			deleteTmpData() {
 				if (this.result.account_prefix && confirm('確認刪除?')) {
 					localStorage.removeItem(this.result.account_prefix);
 				}
+			},
+			toNormalDesc(key) {
+				this.normalDesc = this.normalDescInfo[key];
 			}
 		},
 		mounted() {
@@ -930,7 +1036,7 @@
 					Reflect.set(this, e, localStorage.getItem(e))
 				}
 			})
-			this.tmpList = Object.keys(localStorage).sort().filter(function(e){
+			this.tmpList = Object.keys(localStorage).sort().filter(function (e) {
 				return !setValue.includes(e)
 			})
 		},
