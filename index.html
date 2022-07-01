@@ -523,12 +523,12 @@
 
 						<fieldset>
 							<legend>AE LOTTY(自開彩)</legend>
-							<a
+							<a target="_blank"
 								href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
 								間白牌或追加遊戲的時候有AE自開彩時(可看
 								遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
 							</a>
-							<a
+							<a target="_blank"
 								href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
 								要到Jenkins job輸入白牌代碼並執行
 							</a>
@@ -714,7 +714,7 @@
 								</li>
 								<li>請 [~gio.liao]協助補圖，謝謝</li>
 								<li>提交程式碼,到git lab上Merge Request</li>
-								<li>到<a href="https://jenkins.stgdevops.site/view/MPS/job/MPS/job/SCRIPT/job/AE/">AE
+								<li>到<a href="https://jenkins.stgdevops.site/view/MPS/job/MPS/job/SCRIPT/job/AE/" target="_blank">AE
 										Jenkins</a>部版
 									MPS_AE_BUILD_BE (build -> deploy)
 								</li>
@@ -742,7 +742,7 @@
 									</li>
 									<li>請 [~gio.liao]協助補圖，謝謝</li>
 									<li>提交程式碼,到git lab上Merge Request</li>
-									<li>到<a href="https://jenkins.stgdevops.site/view/MPS/job/MPS/job/SCRIPT/job/AE/">AE
+									<li>到<a href="https://jenkins.stgdevops.site/view/MPS/job/MPS/job/SCRIPT/job/AE/" target="_blank">AE
 											Jenkins</a>部版
 										MPS_AE_BUILD_BE (build -> deploy)
 									</li>
@@ -952,7 +952,7 @@
 		},
 		computed: {
 			kibana: function () {
-				let param = `"doSync done" AND "${this.result.white_label_id}" `
+				let param = `"doSync done" and "${this.result.white_label_id}" `
 				return `https://kibana.admincod88.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'181d0410-dd36-11ec-92f1-c505820dd27e',interval:auto,query:(language:kuery,query:'${param}'),sort:!())`
 			}
 		},
