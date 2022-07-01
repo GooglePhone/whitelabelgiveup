@@ -424,8 +424,9 @@
 								<li>然後一個一個遊戲測試{XXX}GetBetHistorySchedulerManualT</li>
 								<li>再貼到game-record-flyway/profile/prod/db/migration/R__InitData.sql</li>
 								<li>也要修改下面的config</li>
-								<li>到<a href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod_SCRIPT/" target="_blank">
-									Jenkins</a>record (build -> deploy)</li>
+								<li>到<a href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod_SCRIPT/"
+										target="_blank">
+										Jenkins</a>record (build -> deploy)</li>
 							</ol>
 						</fieldset>
 					</fieldset>
@@ -796,7 +797,7 @@
 						"gameTypes": ["SELF_OPEN_GAME_PROVIDER","SELF_OPEN_VENDOR","FAKE_OFFICIAL"]
 						}'</blockquote>
 					</fieldset>`,
-							'更改前/後台域名':`					<fieldset>
+		'更改前/後台域名': `					<fieldset>
 						<legend>舊域名取代為新域名(參考git歷程)</legend>
 
 						<ol>
@@ -821,7 +822,7 @@
 							</li>
 						</ol>
 					</fieldset>`,
-					'修改平台名稱':`					<fieldset>
+		'修改平台名稱': `					<fieldset>
 						<legend>
 							修改平台名稱(參考git歷程)
 						</legend>
@@ -944,6 +945,9 @@
 			"editor.getData": function (val) {
 				let f = val;
 				console.log(f)
+			},
+			toolInput: function (val) {
+				this.toolResult = `共 ${val.length} 字`
 			}
 		},
 		computed: {
