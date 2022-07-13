@@ -18,11 +18,16 @@
 	<!-- Load Vue followed by BootstrapVue -->
 	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 	<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 
 	<!-- Load the following for BootstrapVueIcons support -->
 	<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
 	<script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  
 	<style type="text/css">
 		#css_table {
 			display: table;
@@ -204,14 +209,17 @@
 					</fieldset>
 					<fieldset>
 						<legend>AE LOTTY(自開彩)</legend>
-						<a target="_blank"
+						<!-- <a target="_blank"
 							href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
 							間白牌或追加遊戲的時候有AE自開彩時(可看
 							遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
-						</a>
+						</a> -->
 						<a target="_blank"
 							href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
 							要到Jenkins job輸入白牌代碼並執行
+						</a>
+						<a target="_blank" src="https://kibana.admincod88.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'swerteotso-ims-*',interval:auto,query:(language:kuery,query:addNewGames),sort:!())">
+							確認是否有加入ae lotto
 						</a>
 					</fieldset>
 					<fieldset>
@@ -549,6 +557,29 @@
 					<div style="margin-top:1rem" v-html="normalDesc">
 					</div>
 				</b-tab>
+				<b-tab title="all白牌">
+					<div>
+						<template>
+							<v-data-table
+							  :headers="headers"
+							  :items="items"
+							  item-key="perfix"
+							  :items-per-page="500"
+							  :custom-filter="filterOnlyCapsText"
+							  :search="search"
+							  class="elevation-1"
+							>
+							<template v-slot:top>
+								<v-text-field
+								  v-model="search"
+								  label="Prefix Search (UPPER CASE ONLY)"
+								  class="mx-4"
+								></v-text-field>
+							  </template>
+						</v-data-table>
+						  </template>
+					</div>
+				</b-tab>
 				<b-tab title="小工具">
 					<div>
 						<textarea v-model="toolInput" style="width: 100%;" rows="20"></textarea>
@@ -570,6 +601,14 @@
 				<b-tab title="記事">
 					<div>
 						<textarea v-model="note" style="width: 100%;" rows="20"></textarea>
+					</div>
+				</b-tab>
+				<b-tab title="備註">
+					<div>
+						<ol>
+							<li type="I">現在測試SimplePlay 要到phpvnd</li>
+						</ol>
+						
 					</div>
 				</b-tab>
 				<b-tab title="git">
@@ -841,6 +880,7 @@
 	var localStorage = Window.localStorage
 	var app = new Vue({
 		el: '#app',
+		vuetify: new Vuetify(),
 		data: {
 			info: {
 				env: 'PROD', white_label_id: '', white_label_name: '', currency: '', account_prefix: '', ims_home: '', ec_home: '', ec_api: '', ag: '',
@@ -871,6 +911,18 @@
 			jenkinsUrl: '',
 			normalDescInfo: normalDesc,
 			normalDesc: '',
+			items: [{"code": "williamhill","currency": "BRL",
+	"gameGradle": "./gradlew bootRun -Pargs=--env=PROD,--white_label_id=williamhill,--white_label_name='William Hill',--currency=BRL,--account_prefix=B08,--game_only=true"
+	,"name": "William Hill"
+	,"prefix": "B08"}],
+	headers:[
+			{ text: 'prefix', value: 'prefix',sortable: true},
+			{ text: 'code', value: 'code' },
+			{ text: '幣別', value: 'currency' },
+			{ text: '站名', value: 'name' },
+			{ text: '指令', value: 'gameGradle' },
+			],
+			search:'',
 		},
 		watch: {
 			// whenever question changes, this function will run
@@ -1034,7 +1086,16 @@
 			},
 			toNormalDesc(key) {
 				this.normalDesc = this.normalDescInfo[key];
-			}
+			},
+			filterOnlyCapsText (value, search, item) {
+				let arr = search.split(",").map(element => {
+				if (typeof element === 'string') {
+					return element.trim();
+				}
+				return element;
+				});
+				return arr.includes(value)
+			},
 		},
 		mounted() {
 			let setValue = ['version', 'note'];
@@ -1045,6 +1106,21 @@
 			})
 			this.tmpList = Object.keys(localStorage).sort().filter(function (e) {
 				return !setValue.includes(e)
+			})
+			
+			var request = new Request('https://allwhitelabel.herokuapp.com/whitelabel/getAll');
+			fetch(request)
+			.then(function(response) {
+				return response.json()
+			})
+			.then(function(data){
+				app.$nextTick(() => {
+				app.items = JSON.parse(JSON.stringify(data.data))
+
+       		 });
+			})
+			.catch(function(err) {
+				console.log(err)
 			})
 		},
 	})
