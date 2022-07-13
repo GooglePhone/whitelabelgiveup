@@ -88,7 +88,7 @@
 				<b-tab title="只要白牌指令" active>
 					<fieldset>
 						<legend><b>切分支: (3個專案都要切)</b></legend>
-						<input type="text" v-model="branch" placeholder="jira單號" style="margin-bottom: 0.5rem;">
+						<input class="form-control" type="text" v-model="branch" placeholder="jira單號" style="margin-bottom: 0.5rem;">
 						<fieldset>
 							<div>
 								<blockquote>git checkout -b {{branch}}</blockquote>
@@ -132,58 +132,58 @@
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>env<label></div>
-								<div class="css_td"><input type="text" v-model="result.env"></div>
+								<div class="css_td"><input type="text" v-model="result.env" class="form-control"></div>
 								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>white_label_id<label></div>
-								<div class="css_td"><input type="text" v-model="result.white_label_id"></div>
+								<div class="css_td"><input type="text" v-model="result.white_label_id" class="form-control"></div>
 								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>white_label_name<label></div>
-								<div class="css_td"><input type="text" v-model="result.white_label_name"></div>
+								<div class="css_td"><input type="text" v-model="result.white_label_name" class="form-control"></div>
 								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>currency<label></div>
-								<div class="css_td"><input type="text" v-model="result.currency"></div>
+								<div class="css_td"><input type="text" v-model="result.currency" class="form-control"></div>
 								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>account_prefix<label></div>
-								<div class="css_td"><input type="text" v-model="result.account_prefix"></div>
+								<div class="css_td"><input type="text" v-model="result.account_prefix" class="form-control"></div>
 								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>ims_home<label></div>
-								<div class="css_td"><input type="text" v-model="result.ims_home"></div>
+								<div class="css_td"><input type="text" v-model="result.ims_home" class="form-control"></div>
 								<div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a> </div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>ec_home<label></div>
-								<div class="css_td"><input type="text" v-model="result.ec_home"></div>
+								<div class="css_td"><input type="text" v-model="result.ec_home" class="form-control"></div>
 								<div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a></div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>ec_api<label></div>
-								<div class="css_td"><input type="text" v-model="result.ec_api"></div>
+								<div class="css_td"><input type="text" v-model="result.ec_api" class="form-control"></div>
 								<div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a><i
 										class="material-icons">info</i> </div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>ag<label></div>
-								<div class="css_td"><input type="text" v-model="result.ag"></div>
+								<div class="css_td"><input type="text" v-model="result.ag" class="form-control"></div>
 								<div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a>產生信件用</div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>db_user<label></div>
-								<div class="css_td"><input type="text" v-model="result.db_user"></div>
+								<div class="css_td"><input type="text" v-model="result.db_user" class="form-control"></div>
 								<div class="css_td">跟dba要帳密 James/pinkey</div>
 							</div>
 							<div class="css_tr">
 								<div class="css_td"><label>db_pwd<label></div>
-								<div class="css_td"><input type="text" v-model="result.db_pwd"></div>
+								<div class="css_td"><input type="text" v-model="result.db_pwd" class="form-control"></div>
 								<div class="css_td">跟dba要帳密 James/pinkey</div>
 							</div>
 							<blockquote>跪求 {{result.account_prefix}} db帳密</blockquote>
@@ -249,6 +249,7 @@
 
 				</b-tab>
 				<b-tab title="白牌指令與說明">
+					<form>
 					<h1>接白牌相關</h1>
 					<fieldset>
 						<legend>取得白牌相關資訊:</legend>
@@ -271,8 +272,9 @@
 						<legend>取得白牌相關資訊:</legend>
 						<p>登入總後台前按出開發者模式,登入後取得request的account與password
 						<p>
-							account : <input type="text" v-model="account" />&nbsp;&nbsp;
-							password : <input type="text" v-model="password" />
+							
+							account : <input type="text" v-model="account"  class="mb-2 mr-sm-2 mb-sm-0 form-control"/>&nbsp;&nbsp;
+							password : <input type="text" v-model="password"  class="fmb-2 mr-sm-2 mb-sm-0 form-control" />
 						<p>開啟terminal</p>
 						<p>vi ~/.bash_profile</p>
 						<fieldset>
@@ -307,59 +309,59 @@
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>env<label></div>
-									<div class="css_td"><input type="text" v-model="result.env"></div>
+									<div class="css_td"><input type="text" v-model="result.env"  class="form-control"></div>
 									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>white_label_id<label></div>
-									<div class="css_td"><input type="text" v-model="result.white_label_id"></div>
+									<div class="css_td"><input type="text" v-model="result.white_label_id"  class="form-control"></div>
 									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>white_label_name<label></div>
-									<div class="css_td"><input type="text" v-model="result.white_label_name"></div>
+									<div class="css_td"><input type="text" v-model="result.white_label_name"  class="form-control"></div>
 									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>currency<label></div>
-									<div class="css_td"><input type="text" v-model="result.currency"></div>
+									<div class="css_td"><input type="text" v-model="result.currency"  class="form-control"></div>
 									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>account_prefix<label></div>
-									<div class="css_td"><input type="text" v-model="result.account_prefix"></div>
+									<div class="css_td"><input type="text" v-model="result.account_prefix"  class="form-control"></div>
 									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>ims_home<label></div>
-									<div class="css_td"><input type="text" v-model="result.ims_home"></div>
+									<div class="css_td"><input type="text" v-model="result.ims_home"  class="form-control"></div>
 									<div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a> </div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>ec_home<label></div>
-									<div class="css_td"><input type="text" v-model="result.ec_home"></div>
+									<div class="css_td"><input type="text" v-model="result.ec_home"  class="form-control"></div>
 									<div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a></div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>ec_api<label></div>
-									<div class="css_td"><input type="text" v-model="result.ec_api"></div>
+									<div class="css_td"><input type="text" v-model="result.ec_api"  class="form-control"></div>
 									<div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a><i
 											class="material-icons">info</i> </div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>ag<label></div>
-									<div class="css_td"><input type="text" v-model="result.ag"></div>
+									<div class="css_td"><input type="text" v-model="result.ag"  class="form-control"></div>
 									<div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a>產生信件用
 									</div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>db_user<label></div>
-									<div class="css_td"><input type="text" v-model="result.db_user"></div>
+									<div class="css_td"><input type="text" v-model="result.db_user"  class="form-control"></div>
 									<div class="css_td">跟dba要帳密 James/pinkey</div>
 								</div>
 								<div class="css_tr">
 									<div class="css_td"><label>db_pwd<label></div>
-									<div class="css_td"><input type="text" v-model="result.db_pwd"></div>
+									<div class="css_td"><input type="text" v-model="result.db_pwd"  class="form-control"></div>
 									<div class="css_td">跟dba要帳密 James/pinkey</div>
 								</div>
 								<blockquote>跪求 {{result.account_prefix}} db帳密</blockquote>
@@ -542,6 +544,7 @@
 							</a>
 						</fieldset>
 					</div>
+					</form>
 				</b-tab>
 				<b-tab title="常見單子流程">
 					<b-dropdown id="dropdown-offset" offset="25" text="請選擇" class="m-2">
@@ -960,7 +963,7 @@
 			},
 			"result.db_pwd": function (value) {
 				if (this.result.account_prefix) {
-					localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
+					this.saveTmpData()
 				}
 			},
 			"result.account_prefix": function (value) {
@@ -1078,6 +1081,23 @@
 			}
 			, saveTmpData() {
 				localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
+				 const formData = new FormData();
+				 formData.append("prefix",this.result.account_prefix)
+				 formData.append("code",this.result.white_label_id)
+				 formData.append("currency",this.result.currency )
+				 formData.append("name",this.result.white_label_name)
+				 formData.append("gameGradle",this.jiar_post)
+				 const url = 'https://allwhitelabel.herokuapp.com/whitelabel/save';
+				fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data)
+                }).catch(function(err) {
+				console.log(err)
+				})
 			},
 			deleteTmpData() {
 				if (this.result.account_prefix && confirm('確認刪除?')) {
