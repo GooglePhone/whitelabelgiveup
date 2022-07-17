@@ -2,705 +2,743 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<title>從開始到放棄</title>
-	<link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/523/523808.png">
-	<!-- Add this to <head> -->
+    <meta charset="utf-8">
+    <title>從開始到放棄</title>
+    <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/523/523808.png">
+    <!-- Add this to <head> -->
 
-	<!-- Load required Bootstrap and BootstrapVue CSS -->
-	<link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-	<link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
 
-	<!-- Load polyfills to support older browsers -->
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"
-		crossorigin="anonymous"></script>
+    <!-- Load polyfills to support older browsers -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"
+        crossorigin="anonymous"></script>
 
-	<!-- Load Vue followed by BootstrapVue -->
-	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-	<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <!-- Load Vue followed by BootstrapVue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 
-	<!-- Load the following for BootstrapVueIcons support -->
-	<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
-	<script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-	<link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
-	<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-  
-	<style type="text/css">
-		#css_table {
-			display: table;
+    <!-- Load the following for BootstrapVueIcons support -->
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
 
-		}
+    <style type="text/css">
+        #css_table {
+            display: table;
 
-		.css_tr {
-			display: table-row;
-			padding-right: 3rem;
-		}
+        }
 
-		.css_td {
-			display: table-cell;
-			padding-right: 3rem;
-			padding-bottom: 0.4rem;
-		}
+        .css_tr {
+            display: table-row;
+            padding-right: 3rem;
+        }
 
-		blockquote {
-			background-color: lightgray;
-			padding: 0.5rem
-		}
+        .css_td {
+            display: table-cell;
+            padding-right: 3rem;
+            padding-bottom: 0.4rem;
+        }
 
-		.tooltip {
-			position: relative;
-			display: inline-block;
-			border-bottom: 1px dotted black;
-		}
+        blockquote {
+            background-color: lightgray;
+            padding: 0.5rem
+        }
 
-		.tooltip .tooltiptext {
-			visibility: hidden;
-			width: 120px;
-			background-color: black;
-			color: #fff;
-			text-align: center;
-			border-radius: 6px;
-			padding: 5px 0;
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+        }
 
-			/* Position the tooltip */
-			position: absolute;
-			z-index: 1;
-		}
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
 
-		.tooltip:hover .tooltiptext {
-			visibility: visible;
-		}
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+        }
 
-		.ck-editor__editable_inline {
-			min-height: 30rem !important;
-		}
-	</style>
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
+
+        .ck-editor__editable_inline {
+            min-height: 30rem !important;
+        }
+    </style>
 </head>
 
 <body>
-	<div id="app">
-		<div style="padding:1rem">
-			<b-tabs active-nav-item-class="font-weight-bold text-uppercase text-danger"
-				active-tab-class="font-weight-bold" content-class="mt-3">
-				<b-tab title="只要白牌指令" active>
-					<fieldset>
-						<legend><b>切分支: (3個專案都要切)</b></legend>
-						<input class="form-control" type="text" v-model="branch" placeholder="jira單號" style="margin-bottom: 0.5rem;">
-						<fieldset>
-							<div>
-								<blockquote>git checkout -b {{branch}}</blockquote>
-							</div>
-						</fieldset>
-					</fieldset>
-					<fieldset>
-						<legend>
-							<div>
-								<div>
-									<div v-if="isfilterSelect" style="width:10%;display : inline-block">
-										<b-form-input list="my-list-id" @change="changeData"></b-form-input>
-										<datalist id="my-list-id" autocomplete="true">
-											<option v-for="tmp in tmpList" v-model="result.account_prefix">{{ tmp }}
-											</option>
-										</datalist>
-									</div>
-									<div v-if="!isfilterSelect" style="display : inline-block">
-										<b-form-select v-model="result.account_prefix" :options="tmpList" size="sm"
-											class="mt-3" @change="changeData">
-										</b-form-select>
-									</div>
-									<b-button variant="outline-info" @click="isfilterSelect = !isfilterSelect"
-										style="margin-left:2rem">
-										{{isfilterSelect ? '轉換一般下拉選單' : '轉換有filter的下拉選單'}}
-									</b-button>
-								</div>
+    <div id="app">
+        <div style="padding:1rem">
+            <b-tabs active-nav-item-class="font-weight-bold text-uppercase text-danger"
+                active-tab-class="font-weight-bold" content-class="mt-3">
+                <b-tab title="只要白牌指令" active>
+                    <fieldset>
+                        <legend><b>切分支: (3個專案都要切)</b></legend>
+                        <input class="form-control" type="text" v-model="branch" placeholder="jira單號"
+                            style="margin-bottom: 0.5rem;">
+                        <fieldset>
+                            <div>
+                                <blockquote>git checkout -b {{branch}}</blockquote>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                    <fieldset>
+                        <legend>
+                            <div>
+                                <div>
+                                    <div v-if="isfilterSelect" style="width:10%;display : inline-block">
+                                        <b-form-input list="my-list-id" @change="changeData"></b-form-input>
+                                        <datalist id="my-list-id" autocomplete="true">
+                                            <option v-for="tmp in tmpList" v-model="result.account_prefix">{{ tmp }}
+                                            </option>
+                                        </datalist>
+                                    </div>
+                                    <div v-if="!isfilterSelect" style="display : inline-block">
+                                        <b-form-select v-model="result.account_prefix" :options="tmpList" size="sm"
+                                            class="mt-3" @change="changeData">
+                                        </b-form-select>
+                                    </div>
+                                    <b-button variant="outline-info" @click="isfilterSelect = !isfilterSelect"
+                                        style="margin-left:2rem">
+                                        {{isfilterSelect ? '轉換一般下拉選單' : '轉換有filter的下拉選單'}}
+                                    </b-button>
+                                </div>
 
-								<div style="padding-top:1em">
-									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-									<b-button variant="outline-primary" @click="saveTmpData">更新/儲存資料</b-button>
-									<b-button variant="outline-danger" @click="deleteTmpData">刪除儲存資料</b-button>
-								</div>
-							</div>
-						</legend>
-						<div id="css_table">
-							<div class="css_tr">
-								<div class="css_td">參數名稱</div>
-								<div class="css_td">參數值</div>
-								<div class="css_td">來源</div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>env<label></div>
-								<div class="css_td"><input type="text" v-model="result.env" class="form-control"></div>
-								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>white_label_id<label></div>
-								<div class="css_td"><input type="text" v-model="result.white_label_id" class="form-control"></div>
-								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>white_label_name<label></div>
-								<div class="css_td"><input type="text" v-model="result.white_label_name" class="form-control"></div>
-								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>currency<label></div>
-								<div class="css_td"><input type="text" v-model="result.currency" class="form-control"></div>
-								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>account_prefix<label></div>
-								<div class="css_td"><input type="text" v-model="result.account_prefix" class="form-control"></div>
-								<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>ims_home<label></div>
-								<div class="css_td"><input type="text" v-model="result.ims_home" class="form-control"></div>
-								<div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a> </div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>ec_home<label></div>
-								<div class="css_td"><input type="text" v-model="result.ec_home" class="form-control"></div>
-								<div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a></div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>ec_api<label></div>
-								<div class="css_td"><input type="text" v-model="result.ec_api" class="form-control"></div>
-								<div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a><i
-										class="material-icons">info</i> </div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>ag<label></div>
-								<div class="css_td"><input type="text" v-model="result.ag" class="form-control"></div>
-								<div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a>產生信件用</div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>db_user<label></div>
-								<div class="css_td"><input type="text" v-model="result.db_user" class="form-control"></div>
-								<div class="css_td">跟dba要帳密 James/pinkey</div>
-							</div>
-							<div class="css_tr">
-								<div class="css_td"><label>db_pwd<label></div>
-								<div class="css_td"><input type="text" v-model="result.db_pwd" class="form-control"></div>
-								<div class="css_td">跟dba要帳密 James/pinkey</div>
-							</div>
-							<blockquote>跪求 {{result.account_prefix}} db帳密</blockquote>
-						</div>
-						<fieldset>
-							<legend>cd whitelabel-gen ,到whitelabel-gen執行 以下</legend>
-							<blockquote>{{gradleValue}}</blockquote>
-						</fieldset>
-						<br>
-					</fieldset>
-					<fieldset>
-						<legend>將 --account_prefix 後的欄位移除，補上 --game_only=true , 後貼到 jira 單上，供將來新增遊戲用
-						</legend>
-						<blockquote>{{jiar_post}}</blockquote>
-					</fieldset>
+                                <div style="padding-top:1em">
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <b-button variant="outline-primary" @click="saveTmpData">更新/儲存資料</b-button>
+                                    <b-button variant="outline-danger" @click="deleteTmpData">刪除儲存資料</b-button>
+                                </div>
+                            </div>
+                        </legend>
+                        <div id="css_table">
+                            <div class="css_tr">
+                                <div class="css_td">參數名稱</div>
+                                <div class="css_td">參數值</div>
+                                <div class="css_td">來源</div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>env<label></div>
+                                <div class="css_td"><input type="text" v-model="result.env" class="form-control"></div>
+                                <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>white_label_id<label></div>
+                                <div class="css_td"><input type="text" v-model="result.white_label_id"
+                                        class="form-control"></div>
+                                <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>white_label_name<label></div>
+                                <div class="css_td"><input type="text" v-model="result.white_label_name"
+                                        class="form-control"></div>
+                                <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>currency<label></div>
+                                <div class="css_td"><input type="text" v-model="result.currency" class="form-control">
+                                </div>
+                                <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>account_prefix<label></div>
+                                <div class="css_td"><input type="text" v-model="result.account_prefix"
+                                        class="form-control"></div>
+                                <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>ims_home<label></div>
+                                <div class="css_td"><input type="text" v-model="result.ims_home" class="form-control">
+                                </div>
+                                <div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a> </div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>ec_home<label></div>
+                                <div class="css_td"><input type="text" v-model="result.ec_home" class="form-control">
+                                </div>
+                                <div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a></div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>ec_api<label></div>
+                                <div class="css_td"><input type="text" v-model="result.ec_api" class="form-control">
+                                </div>
+                                <div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a><i
+                                        class="material-icons">info</i> </div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>ag<label></div>
+                                <div class="css_td"><input type="text" v-model="result.ag" class="form-control"></div>
+                                <div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a>產生信件用</div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>db_user<label></div>
+                                <div class="css_td"><input type="text" v-model="result.db_user" class="form-control">
+                                </div>
+                                <div class="css_td">跟dba要帳密 James/pinkey</div>
+                            </div>
+                            <div class="css_tr">
+                                <div class="css_td"><label>db_pwd<label></div>
+                                <div class="css_td"><input type="text" v-model="result.db_pwd" class="form-control">
+                                </div>
+                                <div class="css_td">跟dba要帳密 James/pinkey</div>
+                            </div>
+                            <blockquote>跪求 {{result.account_prefix}} db帳密</blockquote>
+                        </div>
+                        <fieldset>
+                            <legend>cd whitelabel-gen ,到whitelabel-gen執行 以下</legend>
+                            <blockquote>{{gradleValue}}</blockquote>
+                        </fieldset>
+                        <br>
+                    </fieldset>
+                    <fieldset>
+                        <legend>將 --account_prefix 後的欄位移除，補上 --game_only=true , 後貼到 jira 單上，供將來新增遊戲用
+                        </legend>
+                        <blockquote>{{jiar_post}}</blockquote>
+                    </fieldset>
 
-					<fieldset>
-						<legend>Deploy
-						</legend>
-						<blockquote>
-							sh template.sh {{result.env.toLowerCase()}} yabo {{result.white_label_id}}
-						</blockquote>
-					</fieldset>
-					<fieldset>
-						<legend>AE LOTTY(自開彩)</legend>
-						<!-- <a target="_blank"
+                    <fieldset>
+                        <legend>Deploy
+                        </legend>
+                        <blockquote>
+                            sh template.sh {{result.env.toLowerCase()}} yabo {{result.white_label_id}}
+                        </blockquote>
+                    </fieldset>
+                    <fieldset>
+                        <legend>AE LOTTY(自開彩)</legend>
+                        <!-- <a target="_blank"
 							href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
 							間白牌或追加遊戲的時候有AE自開彩時(可看
 							遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
 						</a> -->
-						<a target="_blank"
-							href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
-							要到Jenkins job輸入白牌代碼並執行
-						</a>
-						<a target="_blank" src="https://kibana.admincod88.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'swerteotso-ims-*',interval:auto,query:(language:kuery,query:addNewGames),sort:!())">
-							確認是否有加入ae lotto
-						</a>
-					</fieldset>
-					<fieldset>
-						<legend>查看kibana</legend>
-						<div>
-							<a :href="kibana" target="_blank">查看kibana 確認服務已啟動</a>
-						</div>
-					</fieldset>
-					<fieldset>
-						<legend>信件部分</legend>
-						<div title="信件標題" style="border:1px;border-style: dashed;">MPS
-							{{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}
-							{{result.env.toUpperCase()}}
-							deployment</div>
-						<div title="信件內容" style="border:1px;border-style: dashed;">
-							<p>Hi all,</p>
-							<p>MPS new site
-								"{{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}" in
-								{{result.env}}
-								environment is deployed.</p>
-							<p>EC : <a :href="addHttps(result.ec_home)">{{addHttps(result.ec_home)}}</a> <br>
-								AG : <a :href="addHttps(result.ag)">{{addHttps(result.ag)}}</a></a><br>
-								IMS : <a :href="addHttps(result.ims_home)">{{addHttps(result.ims_home)}}</a></p>
-							<p>Thanks.</p>
-						</div>
-					</fieldset>
+                        <a target="_blank"
+                            href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
+                            要到Jenkins job輸入白牌代碼並執行
+                        </a>
+                        <a target="_blank"
+                            src="https://kibana.admincod88.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'swerteotso-ims-*',interval:auto,query:(language:kuery,query:addNewGames),sort:!())">
+                            確認是否有加入ae lotto
+                        </a>
+                    </fieldset>
+                    <fieldset>
+                        <legend>查看kibana</legend>
+                        <div>
+                            <a :href="kibana" target="_blank">查看kibana 確認服務已啟動</a>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>信件部分</legend>
+                        <div title="信件標題" style="border:1px;border-style: dashed;">MPS
+                            {{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}
+                            {{result.env.toUpperCase()}}
+                            deployment</div>
+                        <div title="信件內容" style="border:1px;border-style: dashed;">
+                            <p>Hi all,</p>
+                            <p>MPS new site
+                                "{{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}" in
+                                {{result.env}}
+                                environment is deployed.</p>
+                            <p>EC : <a :href="addHttps(result.ec_home)">{{addHttps(result.ec_home)}}</a> <br>
+                                AG : <a :href="addHttps(result.ag)">{{addHttps(result.ag)}}</a></a><br>
+                                IMS : <a :href="addHttps(result.ims_home)">{{addHttps(result.ims_home)}}</a></p>
+                            <p>Thanks.</p>
+                        </div>
+                    </fieldset>
 
-				</b-tab>
-				<b-tab title="白牌指令與說明">
-					<form>
-					<h1>接白牌相關</h1>
-					<fieldset>
-						<legend>取得白牌相關資訊:</legend>
-						<div>
-							<p><a target="_blank"
-									href="https://docs.google.com/spreadsheets/d/1A7gCHLcWuDf8I0zOWgoI_llZFGPY614hX2JzO5rUSZw/edit#gid=0">
-									white label文件(內含各白牌名稱、white label code、對接文件與 jira 單等) </a>
-							<p>
+                </b-tab>
+                <b-tab title="白牌指令與說明">
+                    <form>
+                        <h1>接白牌相關</h1>
+                        <fieldset>
+                            <legend>取得白牌相關資訊:</legend>
+                            <div>
+                                <p><a target="_blank"
+                                        href="https://docs.google.com/spreadsheets/d/1A7gCHLcWuDf8I0zOWgoI_llZFGPY614hX2JzO5rUSZw/edit#gid=0">
+                                        white label文件(內含各白牌名稱、white label code、對接文件與 jira 單等) </a>
+                                <p>
 
-							<p><a target="_blank" href="https://mship.admincod88.com/">總後台</a>
-							<p>
-							<p><a target="_blank" href="https://devops-portal.admincod88.com/accounts/login/">DevOps
-									Portal</a>
-							<p>
+                                <p><a target="_blank" href="https://mship.admincod88.com/">總後台</a>
+                                <p>
+                                <p><a target="_blank" href="https://devops-portal.admincod88.com/accounts/login/">DevOps
+                                        Portal</a>
+                                <p>
 
-						</div>
-					</fieldset>
+                            </div>
+                        </fieldset>
 
-					<fieldset>
-						<legend>取得白牌相關資訊:</legend>
-						<p>登入總後台前按出開發者模式,登入後取得request的account與password
-						<p>
-							
-							account : <input type="text" v-model="account"  class="mb-2 mr-sm-2 mb-sm-0 form-control"/>&nbsp;&nbsp;
-							password : <input type="text" v-model="password"  class="fmb-2 mr-sm-2 mb-sm-0 form-control" />
-						<p>開啟terminal</p>
-						<p>vi ~/.bash_profile</p>
-						<fieldset>
-							<p>export MSHIP_PROD_USERNAME=<span>{{account}}<span></p>
-							<p>export MSHIP_PROD_PWD=<span>{{password}}<span></p>
-							<p>export PATH=$PATH:$MSHIP_PROD_USERNAME:$MSHIP_PROD_PWD</p>
-						</fieldset>
-						<p>source ~/.bash_profile</p>
-					</fieldset>
-					<hr>
-					<h3>開工</h3>
-					<fieldset>
-						<legend><b>切分支: (3個專案都要切)</b></legend>
-						<input type="text" v-model="branch" placeholder="jira單號" style="margin-bottom: 0.5rem;">
-						<fieldset>
-							<div>
-								git checkout -b <span>{{branch}}</span>
-							</div>
-						</fieldset>
-					</fieldset>
-					<fieldset>
-						<legend>產生-移動到white_label_gen目錄底下(cd white_label_gen)</S>
-						</legend>
-						<!-- <input type="button" value="reset" @click="resetResult"/> -->
-						<fieldset>
-							<legend>MPS 接白牌流程</legend>
-							<div id="css_table">
-								<div class="css_tr">
-									<div class="css_td">參數名稱</div>
-									<div class="css_td">參數值</div>
-									<div class="css_td">來源</div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>env<label></div>
-									<div class="css_td"><input type="text" v-model="result.env"  class="form-control"></div>
-									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>white_label_id<label></div>
-									<div class="css_td"><input type="text" v-model="result.white_label_id"  class="form-control"></div>
-									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>white_label_name<label></div>
-									<div class="css_td"><input type="text" v-model="result.white_label_name"  class="form-control"></div>
-									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>currency<label></div>
-									<div class="css_td"><input type="text" v-model="result.currency"  class="form-control"></div>
-									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>account_prefix<label></div>
-									<div class="css_td"><input type="text" v-model="result.account_prefix"  class="form-control"></div>
-									<div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>ims_home<label></div>
-									<div class="css_td"><input type="text" v-model="result.ims_home"  class="form-control"></div>
-									<div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a> </div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>ec_home<label></div>
-									<div class="css_td"><input type="text" v-model="result.ec_home"  class="form-control"></div>
-									<div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a></div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>ec_api<label></div>
-									<div class="css_td"><input type="text" v-model="result.ec_api"  class="form-control"></div>
-									<div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a><i
-											class="material-icons">info</i> </div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>ag<label></div>
-									<div class="css_td"><input type="text" v-model="result.ag"  class="form-control"></div>
-									<div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a>產生信件用
-									</div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>db_user<label></div>
-									<div class="css_td"><input type="text" v-model="result.db_user"  class="form-control"></div>
-									<div class="css_td">跟dba要帳密 James/pinkey</div>
-								</div>
-								<div class="css_tr">
-									<div class="css_td"><label>db_pwd<label></div>
-									<div class="css_td"><input type="text" v-model="result.db_pwd"  class="form-control"></div>
-									<div class="css_td">跟dba要帳密 James/pinkey</div>
-								</div>
-								<blockquote>跪求 {{result.account_prefix}} db帳密</blockquote>
-								<p style="color:red">Devops-Portal ：
-									依需求進入該環境(UAT, PRD) Devops-Portal,Search Keyword 搜尋 prefix {{result.account_prefix}},
-									無特別註明 weight 小的先 </p>
-							</div>
-							<fieldset>
-								<legend>cd whitelabel-gen ,到whitelabel-gen執行 以下</legend>
-								<blockquote>{{gradleValue}}</blockquote>
-							</fieldset>
-							<br>
-						</fieldset>
-						<fieldset>
-							<legend>測試相關
-							</legend>
-							<fieldset>
-								<legend>R__Walletaccount注意事項</legend>
-								<p>
-									同時接 SP_RNG, SP_MPG 時, 其中一個會錯誤, 只能一個一個測
-									AE_LOT apiurl 測試用 https, 正式 需改為 http
-									GW, SPADEGAMING 無法在local測試因為啟動遊戲時會打回調 只要確認參數沒錯就可以
-									SBOBET 上線前需要使用程式新增代理
-								</p>
+                        <fieldset>
+                            <legend>取得白牌相關資訊:</legend>
+                            <p>登入總後台前按出開發者模式,登入後取得request的account與password
+                            <p>
 
-							</fieldset>
-							<fieldset>
-								<legend>R__Walletaccount.sql</legend>
-								<p>新增遊戲至對應環境的R__Walletaccount.sql
-									加入需求文件上這次要新增的遊戲
-									config欄位的資料必須對應至需求文件上的欄位資料
-								</p>
-							</fieldset>
-							<fieldset>
-								<legend>測試/新增代理 testCreateAgent</legend>
-								<p>如果要跑一些遊戲商的api去改東西的創帳號的
-									都用gameprovider的名字去找找T結尾那隻測試黨</p>
-								<p>isDemo用來判斷是否為PROD
-									語系可從文件上得知
-									主題, 限額記得要填</p>
-							</fieldset>
-							<fieldset>
-								<legend>手動測試(有錯誤或是SP_RNG, SP_MPG 同時存在) getProfileGameProvidor</legend>
-								<p>CmsProfileGameProviderServiceManualIT</p>
-								<p>語言和幣別需改為需求文件上指定的GW無法在local測試因為啟動遊戲時會打回調 只要確認參數沒錯就可以</p>
-							</fieldset>
-						</fieldset>
+                                account : <input type="text" v-model="account"
+                                    class="mb-2 mr-sm-2 mb-sm-0 form-control" />&nbsp;&nbsp;
+                                password : <input type="text" v-model="password"
+                                    class="fmb-2 mr-sm-2 mb-sm-0 form-control" />
+                            <p>開啟terminal</p>
+                            <p>vi ~/.bash_profile</p>
+                            <fieldset>
+                                <p>export MSHIP_PROD_USERNAME=<span>{{account}}<span></p>
+                                <p>export MSHIP_PROD_PWD=<span>{{password}}<span></p>
+                                <p>export PATH=$PATH:$MSHIP_PROD_USERNAME:$MSHIP_PROD_PWD</p>
+                            </fieldset>
+                            <p>source ~/.bash_profile</p>
+                        </fieldset>
+                        <hr>
+                        <h3>開工</h3>
+                        <fieldset>
+                            <legend><b>切分支: (3個專案都要切)</b></legend>
+                            <input type="text" v-model="branch" placeholder="jira單號" style="margin-bottom: 0.5rem;">
+                            <fieldset>
+                                <div>
+                                    git checkout -b <span>{{branch}}</span>
+                                </div>
+                            </fieldset>
+                        </fieldset>
+                        <fieldset>
+                            <legend>產生-移動到white_label_gen目錄底下(cd white_label_gen)</S>
+                            </legend>
+                            <!-- <input type="button" value="reset" @click="resetResult"/> -->
+                            <fieldset>
+                                <legend>MPS 接白牌流程</legend>
+                                <div id="css_table">
+                                    <div class="css_tr">
+                                        <div class="css_td">參數名稱</div>
+                                        <div class="css_td">參數值</div>
+                                        <div class="css_td">來源</div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>env<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.env"
+                                                class="form-control"></div>
+                                        <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>white_label_id<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.white_label_id"
+                                                class="form-control"></div>
+                                        <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>white_label_name<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.white_label_name"
+                                                class="form-control"></div>
+                                        <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>currency<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.currency"
+                                                class="form-control"></div>
+                                        <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>account_prefix<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.account_prefix"
+                                                class="form-control"></div>
+                                        <div class="css_td"><a :href="jira_web+branch" target="_blank">JIRA上看</a></div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>ims_home<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.ims_home"
+                                                class="form-control"></div>
+                                        <div class="css_td"> <a :href="dev_result" target="_blank">Devops-Portal</a>
+                                        </div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>ec_home<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.ec_home"
+                                                class="form-control"></div>
+                                        <div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a>
+                                        </div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>ec_api<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.ec_api"
+                                                class="form-control"></div>
+                                        <div class="css_td"><a :href="dev_result" target="_blank">Devops-Portal</a><i
+                                                class="material-icons">info</i> </div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>ag<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.ag" class="form-control">
+                                        </div>
+                                        <div class="css_td"> <a :href="dev_result"
+                                                target="_blank">Devops-Portal</a>產生信件用
+                                        </div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>db_user<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.db_user"
+                                                class="form-control"></div>
+                                        <div class="css_td">跟dba要帳密 James/pinkey</div>
+                                    </div>
+                                    <div class="css_tr">
+                                        <div class="css_td"><label>db_pwd<label></div>
+                                        <div class="css_td"><input type="text" v-model="result.db_pwd"
+                                                class="form-control"></div>
+                                        <div class="css_td">跟dba要帳密 James/pinkey</div>
+                                    </div>
+                                    <blockquote>跪求 {{result.account_prefix}} db帳密</blockquote>
+                                    <p style="color:red">Devops-Portal ：
+                                        依需求進入該環境(UAT, PRD) Devops-Portal,Search Keyword 搜尋 prefix
+                                        {{result.account_prefix}},
+                                        無特別註明 weight 小的先 </p>
+                                </div>
+                                <fieldset>
+                                    <legend>cd whitelabel-gen ,到whitelabel-gen執行 以下</legend>
+                                    <blockquote>{{gradleValue}}</blockquote>
+                                </fieldset>
+                                <br>
+                            </fieldset>
+                            <fieldset>
+                                <legend>測試相關
+                                </legend>
+                                <fieldset>
+                                    <legend>R__Walletaccount注意事項</legend>
+                                    <p>
+                                        同時接 SP_RNG, SP_MPG 時, 其中一個會錯誤, 只能一個一個測
+                                        AE_LOT apiurl 測試用 https, 正式 需改為 http
+                                        GW, SPADEGAMING 無法在local測試因為啟動遊戲時會打回調 只要確認參數沒錯就可以
+                                        SBOBET 上線前需要使用程式新增代理
+                                    </p>
 
-						<fieldset>
-							<legend>將 --account_prefix 後的欄位移除，補上 --game_only=true , 後貼到 jira 單上，供將來新增遊戲用
-							</legend>
-							<blockquote>{{jiar_post}}</blockquote>
-						</fieldset>
-					</fieldset>
-					<fieldset style="margin-top: 1rem">
-						<b>** 關於Sbobet,目前有兩隻在接白牌或新遊戲的時候,要看一下文件,新的都是跑Sbobet2,開頭的</b>
-						<p>建代理的參數 casinoTableLimit 基本不需要變動,要確認請看文件 <a target="_blank" href="https://imgur.com/a/uqBYiSc"
-								target="_blank">來源</a></p>
-						<p>基本上與原有流程相同</p>
-					</fieldset>
-					<hr>
-					<fieldset>
-						<legend>record相關
-						</legend>
-						<fieldset>
-							<legend>看game-record-flyway/profile/prod/db/migration/R__InitData.sql,會有相關SQL
-							</legend>
-							<ol>
-								<li>先貼到game-record-flyway/profile/local/db/migration/R__InitData.sql</li>
-								<li>然後一個一個遊戲測試{XXX}GetBetHistorySchedulerManualT</li>
-								<li>再貼到game-record-flyway/profile/prod/db/migration/R__InitData.sql</li>
-								<li>也要修改下面的config</li>
-								<li>到<a href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod_SCRIPT/"
-										target="_blank">
-										Jenkins</a>record (build -> deploy)</li>
-							</ol>
-						</fieldset>
-					</fieldset>
-					<fieldset>
-						<legend>Deploy
-						</legend>
-						<ol type="1">
-							<li>
-								<blockquote>pull deploy 專案到最新版</blockquote>
-							</li>
-							<li>
-								<blockquote>至 shell 目錄，執行 sh template.sh ENV TEMPLATE_WL(yabo) TARGET_WL, e.g. sh
-									template.sh prod
-									yabo crown82
-								</blockquote>
-							</li>
-							<blockquote>
-								sh template.sh {{result.env.toLowerCase()}} yabo {{result.white_label_id}}
-							</blockquote>
-							<li>
-								<blockquote>ENV為對應環境(uat/prod), TEMPLATE_WL為複製的來源white label,
-									目前都指定為yabo即可。TARGET_WL為本次新增的white
-									label code.
-								</blockquote>
-							</li>
-						</ol>
-					</fieldset>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>R__Walletaccount.sql</legend>
+                                    <p>新增遊戲至對應環境的R__Walletaccount.sql
+                                        加入需求文件上這次要新增的遊戲
+                                        config欄位的資料必須對應至需求文件上的欄位資料
+                                    </p>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>測試/新增代理 testCreateAgent</legend>
+                                    <p>如果要跑一些遊戲商的api去改東西的創帳號的
+                                        都用gameprovider的名字去找找T結尾那隻測試黨</p>
+                                    <p>isDemo用來判斷是否為PROD
+                                        語系可從文件上得知
+                                        主題, 限額記得要填</p>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>手動測試(有錯誤或是SP_RNG, SP_MPG 同時存在) getProfileGameProvidor</legend>
+                                    <p>CmsProfileGameProviderServiceManualIT</p>
+                                    <p>語言和幣別需改為需求文件上指定的GW無法在local測試因為啟動遊戲時會打回調 只要確認參數沒錯就可以</p>
+                                </fieldset>
+                            </fieldset>
 
-					<fieldset>
-						<legend>Jenkins 先build完再deploy (只要在prod部署完都要到as-ims-maintenance回報)
-						</legend>
-						<fieldset>
-							<legend>MPS部署</legend>
-							<ol type="1">
-								<li>
-									<blockquote><a target="_blank"
-											href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/newJob">
-											到mps底下的script點選newItem
-										</a></blockquote>
-								</li>
-								<li>
-									<blockquote>Enter an item name : {prefix}_{white_label_code}
-									</blockquote>
-									<p v-if="result.account_prefix != '' && result.white_label_id != ''">
-										eg:{{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}</p>
-								</li>
-								<li>
-									選擇If you want to create a new item from other existing, you can use this option:
-									然後從尾數相同的白牌選一個,要修改組態裡面的shell
-								</li>
-								<li>
-									<a href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/"
-										target="_blank">
-										建新白牌時(build,deploy後) 我們最後要多加一個 啟用 DI 服務的步驟 再請大家注意</a>
-									1. <a target="_blank"
-										href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/0_INIT_WL_JWT/">新增白牌的JWT</a>
-									2. <a target="_blank"
-										href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/1_TRIGGER_DI_WL_SYNC/">新白牌deploy成功後
-										請到這個 job, 輸入大寫白牌名稱 並選擇 ACTIVE 啟用</a>
-									3. 再到 <a :href="kibana" target="_blank">kibana</a>輸入關鍵字確認服務已啟動
+                            <fieldset>
+                                <legend>將 --account_prefix 後的欄位移除，補上 --game_only=true , 後貼到 jira 單上，供將來新增遊戲用
+                                </legend>
+                                <blockquote>{{jiar_post}}</blockquote>
+                            </fieldset>
+                        </fieldset>
+                        <fieldset style="margin-top: 1rem">
+                            <b>** 關於Sbobet,目前有兩隻在接白牌或新遊戲的時候,要看一下文件,新的都是跑Sbobet2,開頭的</b>
+                            <p>建代理的參數 casinoTableLimit 基本不需要變動,要確認請看文件 <a target="_blank"
+                                    href="https://imgur.com/a/uqBYiSc" target="_blank">來源</a></p>
+                            <p>基本上與原有流程相同</p>
+                        </fieldset>
+                        <hr>
+                        <fieldset>
+                            <legend>record相關
+                            </legend>
+                            <fieldset>
+                                <legend>看game-record-flyway/profile/prod/db/migration/R__InitData.sql,會有相關SQL
+                                </legend>
+                                <ol>
+                                    <li>先貼到game-record-flyway/profile/local/db/migration/R__InitData.sql</li>
+                                    <li>然後一個一個遊戲測試{XXX}GetBetHistorySchedulerManualT</li>
+                                    <li>再貼到game-record-flyway/profile/prod/db/migration/R__InitData.sql</li>
+                                    <li>也要修改下面的config</li>
+                                    <li>到<a href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod_SCRIPT/"
+                                            target="_blank">
+                                            Jenkins</a>record (build -> deploy)</li>
+                                </ol>
+                            </fieldset>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Deploy
+                            </legend>
+                            <ol type="1">
+                                <li>
+                                    <blockquote>pull deploy 專案到最新版</blockquote>
+                                </li>
+                                <li>
+                                    <blockquote>至 shell 目錄，執行 sh template.sh ENV TEMPLATE_WL(yabo) TARGET_WL, e.g. sh
+                                        template.sh prod
+                                        yabo crown82
+                                    </blockquote>
+                                </li>
+                                <blockquote>
+                                    sh template.sh {{result.env.toLowerCase()}} yabo {{result.white_label_id}}
+                                </blockquote>
+                                <li>
+                                    <blockquote>ENV為對應環境(uat/prod), TEMPLATE_WL為複製的來源white label,
+                                        目前都指定為yabo即可。TARGET_WL為本次新增的white
+                                        label code.
+                                    </blockquote>
+                                </li>
+                            </ol>
+                        </fieldset>
 
-									</a>
-								</li>
-								<li>前後台測試</li>
-								<li>
-									確定可以登上ec網站，就準備寄信到Ｍobile,IMS群
-									<br>
-									<fieldset>
-										<legend>信件部分</legend>
-										<div title="信件標題" style="border:1px;border-style: dashed;">MPS
-											{{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}
-											{{result.env.toUpperCase()}}
-											deployment</div>
-										<div title="信件內容" style="border:1px;border-style: dashed;">
-											<p>Hi all,</p>
-											<p>MPS new site
-												"{{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}" in
-												{{result.env}}
-												environment is deployed.</p>
-											<p>EC : <a :href="addHttps(result.ec_home)">{{addHttps(result.ec_home)}}</a>
-												<br>
-												AG : <a :href="addHttps(result.ag)">{{addHttps(result.ag)}}</a></a><br>
-												IMS : <a
-													:href="addHttps(result.ims_home)">{{addHttps(result.ims_home)}}</a>
-											</p>
-											<p>Thanks.</p>
-										</div>
-									</fieldset>
-								</li>
-							</ol>
-						</fieldset>
-					</fieldset>
-					<div>
+                        <fieldset>
+                            <legend>Jenkins 先build完再deploy (只要在prod部署完都要到as-ims-maintenance回報)
+                            </legend>
+                            <fieldset>
+                                <legend>MPS部署</legend>
+                                <ol type="1">
+                                    <li>
+                                        <blockquote><a target="_blank"
+                                                href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/newJob">
+                                                到mps底下的script點選newItem
+                                            </a></blockquote>
+                                    </li>
+                                    <li>
+                                        <blockquote>Enter an item name : {prefix}_{white_label_code}
+                                        </blockquote>
+                                        <p v-if="result.account_prefix != '' && result.white_label_id != ''">
+                                            eg:{{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}</p>
+                                    </li>
+                                    <li>
+                                        選擇If you want to create a new item from other existing, you can use this option:
+                                        然後從尾數相同的白牌選一個,要修改組態裡面的shell
+                                    </li>
+                                    <li>
+                                        <a href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/"
+                                            target="_blank">
+                                            建新白牌時(build,deploy後) 我們最後要多加一個 啟用 DI 服務的步驟 再請大家注意</a>
+                                        1. <a target="_blank"
+                                            href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/0_INIT_WL_JWT/">新增白牌的JWT</a>
+                                        2. <a target="_blank"
+                                            href="https://jenkins.admincod88.com/view/MPS/job/MPS/job/SCRIPT/job/1_TRIGGER_DI_WL_SYNC/">新白牌deploy成功後
+                                            請到這個 job, 輸入大寫白牌名稱 並選擇 ACTIVE 啟用</a>
+                                        3. 再到 <a :href="kibana" target="_blank">kibana</a>輸入關鍵字確認服務已啟動
 
-						<fieldset>
-							<legend>AE LOTTY(自開彩)</legend>
-							<a target="_blank"
-								href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
-								間白牌或追加遊戲的時候有AE自開彩時(可看
-								遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
-							</a>
-							<a target="_blank"
-								href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
-								要到Jenkins job輸入白牌代碼並執行
-							</a>
-						</fieldset>
-					</div>
-					</form>
-				</b-tab>
-				<b-tab title="常見單子流程">
-					<b-dropdown id="dropdown-offset" offset="25" text="請選擇" class="m-2">
-						<div v-for="(value, key) in normalDescInfo ">
-							<b-dropdown-item @click="toNormalDesc(key)">{{key}}</b-dropdown-item>
-						</div>
-					</b-dropdown>
-					<b-form-input list="normal-list-id" @change="toNormalDesc"></b-form-input>
-					<datalist id="normal-list-id">
-						<option v-for="(value, key) in normalDescInfo" @click="toNormalDesc(key)">{{ key }}
-						</option>
-					</datalist>
-					<div style="margin-top:1rem" v-html="normalDesc">
-					</div>
-				</b-tab>
-				<b-tab title="all白牌">
-					<div>
-						<template>
-							<v-data-table
-							  :headers="headers"
-							  :items="items"
-							  item-key="perfix"
-							  :items-per-page="500"
-							  :custom-filter="filterOnlyCapsText"
-							  :search="search"
-							  class="elevation-1"
-							>
-							<template v-slot:top>
-								<v-text-field
-								  v-model="search"
-								  label="Prefix Search (UPPER CASE ONLY)"
-								  class="mx-4"
-								></v-text-field>
-							  </template>
-						</v-data-table>
-						  </template>
-					</div>
-				</b-tab>
-				<b-tab title="小工具">
-					<div>
-						<textarea v-model="toolInput" style="width: 100%;" rows="20"></textarea>
-					</div>
-					<b-button variant="outline-primary" @click="upperCase">轉大寫</b-button>
-					<b-button variant="outline-primary" @click="lowerCase">轉小寫</b-button>
-					<b-button variant="outline-primary" @click="toHump">底線轉駝峰</b-button>
-					<b-button variant="outline-primary" @click="toLine">駝峰轉底線</b-button>
-					<b-button variant="outline-primary" @click="toTrim">去空白</b-button>
-					<b-button variant="outline-primary" @click="addDoubleQuotes">逗號分隔加雙引號</b-button>
-					<b-button variant="outline-primary" @click="spaceToUnderLine">空白變底線</b-button>
-					<b-button variant="outline-primary" @click="jsonBeautifier">json Beautifier</b-button>
-					<b-button variant="outline-primary" @click="jsonToBulk">jsonToBulk</b-button>
-					<!-- <b-button variant="outline-primary" @click="bulkToJSON">bulkToJSON</b-button> -->
-					<div style="padding-top: 1rem;">
-						<pre v-html="toolResult"></pre>
-					</div>
-				</b-tab>
-				<b-tab title="記事">
-					<div>
-						<textarea v-model="note" style="width: 100%;" rows="20"></textarea>
-					</div>
-				</b-tab>
-				<b-tab title="備註">
-					<div>
-						<ol>
-							<li type="I">現在測試SimplePlay 要到phpvnd</li>
-						</ol>
-						
-					</div>
-				</b-tab>
-				<b-tab title="git">
-					<div
-						style="border-width:3px;border-style:dashed;border-color:#FFAC55;padding:5px;margin-top: 2rem;">
-						<fieldset>
-							<legend>git部分</legend>
-							切換分支：git checkout 單號
-							<fieldset>
-								<legend>git commit</legend>
-								<ol type="1">
-									<li>
-										<blockquote>git add .</blockquote>
-									</li>
-									<li>
-										<blockquote>git commit -m 單號 新增 單子上面標題</blockquote>
-									</li>
-									<li>
-										<blockquote>git push</blockquote>
-									</li>
-								</ol>
-							</fieldset>
+                                        </a>
+                                    </li>
+                                    <li>前後台測試</li>
+                                    <li>
+                                        確定可以登上ec網站，就準備寄信到Ｍobile,IMS群
+                                        <br>
+                                        <fieldset>
+                                            <legend>信件部分</legend>
+                                            <div title="信件標題" style="border:1px;border-style: dashed;">MPS
+                                                {{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}
+                                                {{result.env.toUpperCase()}}
+                                                deployment</div>
+                                            <div title="信件內容" style="border:1px;border-style: dashed;">
+                                                <p>Hi all,</p>
+                                                <p>MPS new site
+                                                    "{{result.account_prefix}}_{{result.white_label_id.toUpperCase()}}"
+                                                    in
+                                                    {{result.env}}
+                                                    environment is deployed.</p>
+                                                <p>EC : <a
+                                                        :href="addHttps(result.ec_home)">{{addHttps(result.ec_home)}}</a>
+                                                    <br>
+                                                    AG : <a
+                                                        :href="addHttps(result.ag)">{{addHttps(result.ag)}}</a></a><br>
+                                                    IMS : <a
+                                                        :href="addHttps(result.ims_home)">{{addHttps(result.ims_home)}}</a>
+                                                </p>
+                                                <p>Thanks.</p>
+                                            </div>
+                                        </fieldset>
+                                    </li>
+                                </ol>
+                            </fieldset>
+                        </fieldset>
+                        <div>
 
-							<fieldset>
-								<legend>git <span style="color: red;">衝突</span></legend>
-								<ol type="1">
-									<li>
-										<blockquote>git rebase origin/master -i</blockquote>
-									</li>
-									<li>
-										<blockquote>git checkout master</blockquote>
-									</li>
-									<li>
-										<blockquote>git pull</blockquote>
-									</li>
-									<li>
-										<blockquote>解決衝突</blockquote>
-									</li>
-									<li>
-										<blockquote>git add .</blockquote>
-									</li>
-									<li>
-										<blockquote>git rebase --continue</blockquote>
-									</li>
-									<li>
-										<blockquote> git push origin 單號 // git push -f </blockquote>
-									</li>
-								</ol>
-							</fieldset>
-							無衝突則到<a title="Dashboard" id="logo" href="https://gitlab.nexiosoft.com/"
-								target="_blank"><svg width="24" height="24" class="tanuki-logo" viewBox="0 0 36 36">
-									<path class="tanuki-shape tanuki-left-ear" fill="#e24329"
-										d="M2 14l9.38 9v-9l-4-12.28c-.205-.632-1.176-.632-1.38 0z"></path>
-									<path class="tanuki-shape tanuki-right-ear" fill="#e24329"
-										d="M34 14l-9.38 9v-9l4-12.28c.205-.632 1.176-.632 1.38 0z"></path>
-									<path class="tanuki-shape tanuki-nose" fill="#e24329" d="M18,34.38 3,14 33,14 Z">
-									</path>
-									<path class="tanuki-shape tanuki-left-eye" fill="#fc6d26"
-										d="M18,34.38 11.38,14 2,14 6,25Z">
-									</path>
-									<path class="tanuki-shape tanuki-right-eye" fill="#fc6d26"
-										d="M18,34.38 24.62,14 34,14 30,25Z">
-									</path>
-									<path class="tanuki-shape tanuki-left-cheek" fill="#fca326"
-										d="M2 14L.1 20.16c-.18.565 0 1.2.5 1.56l17.42 12.66z"></path>
-									<path class="tanuki-shape tanuki-right-cheek" fill="#fca326"
-										d="M34 14l1.9 6.16c.18.565 0 1.2-.5 1.56L18 34.38z"></path>
-								</svg>
+                            <fieldset>
+                                <legend>AE LOTTY(自開彩)</legend>
+                                <a target="_blank"
+                                    href="https://docs.google.com/spreadsheets/d/1nxOtWa-sk1nzeH3Q1jHx8C8OOadzmHsucn5_wKjMYEE/edit#gid=1525284803">
+                                    間白牌或追加遊戲的時候有AE自開彩時(可看
+                                    遊戲商新增遊戲 AE_LOTTO 新增自開彩部分)
+                                </a>
+                                <a target="_blank"
+                                    href="https://jenkins.admincod88.com/view/Game_Record/job/Game_Recrod/job/TOOL/job/add_ae_lotto_game/">
+                                    要到Jenkins job輸入白牌代碼並執行
+                                </a>
+                            </fieldset>
+                        </div>
+                    </form>
+                </b-tab>
+                <b-tab title="常見單子流程">
+                    <b-dropdown id="dropdown-offset" offset="25" text="請選擇" class="m-2">
+                        <div v-for="(value, key) in normalDescInfo ">
+                            <b-dropdown-item @click="toNormalDesc(key)">{{key}}</b-dropdown-item>
+                        </div>
+                    </b-dropdown>
+                    <b-form-input list="normal-list-id" @change="toNormalDesc"></b-form-input>
+                    <datalist id="normal-list-id">
+                        <option v-for="(value, key) in normalDescInfo" @click="toNormalDesc(key)">{{ key }}
+                        </option>
+                    </datalist>
+                    <div style="margin-top:1rem" v-html="normalDesc">
+                    </div>
+                </b-tab>
+                <b-tab title="all白牌">
+                    <div style="text-align:right">
+                        <div class="mt-3">
+                            {{excelStatus}}
+                            <b-button-group>
+                                <b-button variant="outline-primary" class="mb-2  mr-sm-2 mb-sm-0 " @click="exportXlsx"
+                                    style="margin-right:1rem">匯出</b-button>
+                                <b-button variant="outline-primary" class="mb-2 mr-sm-2 mb-sm-0 " @click="importXlsx">匯入
+                                </b-button>
+                                <input type="file" @change="setUploadData( $event )" />
+                            </b-button-group>
+                        </div>
+                        <div class="mt-2">
+                            <form method="post">
 
-								<span class="logo-text d-none d-lg-block gl-ml-3">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 617 169" width="5rem"
-										height="1rem">
-										<path
-											d="M315.26 2.97h-21.8l.1 162.5h88.3v-20.1h-66.5l-.1-142.4M465.89 136.95c-5.5 5.7-14.6 11.4-27 11.4-16.6 0-23.3-8.2-23.3-18.9 0-16.1 11.2-23.8 35-23.8 4.5 0 11.7.5 15.4 1.2v30.1h-.1m-22.6-98.5c-17.6 0-33.8 6.2-46.4 16.7l7.7 13.4c8.9-5.2 19.8-10.4 35.5-10.4 17.9 0 25.8 9.2 25.8 24.6v7.9c-3.5-.7-10.7-1.2-15.1-1.2-38.2 0-57.6 13.4-57.6 41.4 0 25.1 15.4 37.7 38.7 37.7 15.7 0 30.8-7.2 36-18.9l4 15.9h15.4v-83.2c-.1-26.3-11.5-43.9-44-43.9M557.63 149.1c-8.2 0-15.4-1-20.8-3.5V70.5c7.4-6.2 16.6-10.7 28.3-10.7 21.1 0 29.2 14.9 29.2 39 0 34.2-13.1 50.3-36.7 50.3m9.2-110.6c-19.5 0-30 13.3-30 13.3v-21l-.1-27.8h-21.3l.1 158.5c10.7 4.5 25.3 6.9 41.2 6.9 40.7 0 60.3-26 60.3-70.9-.1-35.5-18.2-59-50.2-59M77.9 20.6c19.3 0 31.8 6.4 39.9 12.9l9.4-16.3C114.5 6 97.3 0 78.9 0 32.5 0 0 28.3 0 85.4c0 59.8 35.1 83.1 75.2 83.1 20.1 0 37.2-4.7 48.4-9.4l-.5-63.9V75.1H63.6v20.1h38l.5 48.5c-5 2.5-13.6 4.5-25.3 4.5-32.2 0-53.8-20.3-53.8-63-.1-43.5 22.2-64.6 54.9-64.6M231.43 2.95h-21.3l.1 27.3v94.3c0 26.3 11.4 43.9 43.9 43.9 4.5 0 8.9-.4 13.1-1.2v-19.1c-3.1.5-6.4.7-9.9.7-17.9 0-25.8-9.2-25.8-24.6v-65h35.7v-17.8h-35.7l-.1-38.5M155.96 165.47h21.3v-124h-21.3v124M155.96 24.37h21.3V3.07h-21.3v21.3">
-										</path>
-									</svg>
+                            </form>
+                        </div>
+                    </div>
+                    <div>
+                        <template>
+                            <v-data-table :headers="headers" :items="items" item-key="perfix" :items-per-page="500"
+                                :custom-filter="filterOnlyCapsText" :search="search" class="elevation-1">
+                                <template v-slot:top>
+                                    <v-text-field v-model="search" label="Prefix Search (UPPER CASE ONLY)" class="mx-4">
+                                    </v-text-field>
+                                </template>
+                            </v-data-table>
+                        </template>
+                    </div>
+                </b-tab>
+                <b-tab title="小工具">
+                    <div>
+                        <textarea v-model="toolInput" style="width: 100%;" rows="20"></textarea>
+                    </div>
+                    <b-button variant="outline-primary" @click="upperCase">轉大寫</b-button>
+                    <b-button variant="outline-primary" @click="lowerCase">轉小寫</b-button>
+                    <b-button variant="outline-primary" @click="toHump">底線轉駝峰</b-button>
+                    <b-button variant="outline-primary" @click="toLine">駝峰轉底線</b-button>
+                    <b-button variant="outline-primary" @click="toTrim">去空白</b-button>
+                    <b-button variant="outline-primary" @click="addDoubleQuotes">逗號分隔加雙引號</b-button>
+                    <b-button variant="outline-primary" @click="spaceToUnderLine">空白變底線</b-button>
+                    <b-button variant="outline-primary" @click="jsonBeautifier">json Beautifier</b-button>
+                    <b-button variant="outline-primary" @click="jsonToBulk">jsonToBulk</b-button>
+                    <!-- <b-button variant="outline-primary" @click="bulkToJSON">bulkToJSON</b-button> -->
+                    <div style="padding-top: 1rem;">
+                        <pre v-html="toolResult"></pre>
+                    </div>
+                </b-tab>
+                <b-tab title="記事">
+                    <div>
+                        <textarea v-model="note" style="width: 100%;" rows="20"></textarea>
+                    </div>
+                </b-tab>
+                <b-tab title="備註">
+                    <div>
+                        <ol>
+                            <li type="I">現在測試SimplePlay 要到phpvnd</li>
+                        </ol>
 
-								</span>
-							</a>的menu選擇Merge Request,選擇剛剛push的資料
-						</fieldset>
-					</div>
-				</b-tab>
-				<b-tab title="Disabled" disabled>
-					<p>table:game : status 0為不可玩,1可玩,isenabled:true 為可見,false不可見</p>
-					<p>I'm a disabled tab!</p>
-				</b-tab>
-			</b-tabs>
-		</div>
-	</div>
+                    </div>
+                </b-tab>
+                <b-tab title="git">
+                    <div
+                        style="border-width:3px;border-style:dashed;border-color:#FFAC55;padding:5px;margin-top: 2rem;">
+                        <fieldset>
+                            <legend>git部分</legend>
+                            切換分支：git checkout 單號
+                            <fieldset>
+                                <legend>git commit</legend>
+                                <ol type="1">
+                                    <li>
+                                        <blockquote>git add .</blockquote>
+                                    </li>
+                                    <li>
+                                        <blockquote>git commit -m 單號 新增 單子上面標題</blockquote>
+                                    </li>
+                                    <li>
+                                        <blockquote>git push</blockquote>
+                                    </li>
+                                </ol>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>git <span style="color: red;">衝突</span></legend>
+                                <ol type="1">
+                                    <li>
+                                        <blockquote>git rebase origin/master -i</blockquote>
+                                    </li>
+                                    <li>
+                                        <blockquote>git checkout master</blockquote>
+                                    </li>
+                                    <li>
+                                        <blockquote>git pull</blockquote>
+                                    </li>
+                                    <li>
+                                        <blockquote>解決衝突</blockquote>
+                                    </li>
+                                    <li>
+                                        <blockquote>git add .</blockquote>
+                                    </li>
+                                    <li>
+                                        <blockquote>git rebase --continue</blockquote>
+                                    </li>
+                                    <li>
+                                        <blockquote> git push origin 單號 // git push -f </blockquote>
+                                    </li>
+                                </ol>
+                            </fieldset>
+                            無衝突則到<a title="Dashboard" id="logo" href="https://gitlab.nexiosoft.com/"
+                                target="_blank"><svg width="24" height="24" class="tanuki-logo" viewBox="0 0 36 36">
+                                    <path class="tanuki-shape tanuki-left-ear" fill="#e24329"
+                                        d="M2 14l9.38 9v-9l-4-12.28c-.205-.632-1.176-.632-1.38 0z"></path>
+                                    <path class="tanuki-shape tanuki-right-ear" fill="#e24329"
+                                        d="M34 14l-9.38 9v-9l4-12.28c.205-.632 1.176-.632 1.38 0z"></path>
+                                    <path class="tanuki-shape tanuki-nose" fill="#e24329" d="M18,34.38 3,14 33,14 Z">
+                                    </path>
+                                    <path class="tanuki-shape tanuki-left-eye" fill="#fc6d26"
+                                        d="M18,34.38 11.38,14 2,14 6,25Z">
+                                    </path>
+                                    <path class="tanuki-shape tanuki-right-eye" fill="#fc6d26"
+                                        d="M18,34.38 24.62,14 34,14 30,25Z">
+                                    </path>
+                                    <path class="tanuki-shape tanuki-left-cheek" fill="#fca326"
+                                        d="M2 14L.1 20.16c-.18.565 0 1.2.5 1.56l17.42 12.66z"></path>
+                                    <path class="tanuki-shape tanuki-right-cheek" fill="#fca326"
+                                        d="M34 14l1.9 6.16c.18.565 0 1.2-.5 1.56L18 34.38z"></path>
+                                </svg>
+
+                                <span class="logo-text d-none d-lg-block gl-ml-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 617 169" width="5rem"
+                                        height="1rem">
+                                        <path
+                                            d="M315.26 2.97h-21.8l.1 162.5h88.3v-20.1h-66.5l-.1-142.4M465.89 136.95c-5.5 5.7-14.6 11.4-27 11.4-16.6 0-23.3-8.2-23.3-18.9 0-16.1 11.2-23.8 35-23.8 4.5 0 11.7.5 15.4 1.2v30.1h-.1m-22.6-98.5c-17.6 0-33.8 6.2-46.4 16.7l7.7 13.4c8.9-5.2 19.8-10.4 35.5-10.4 17.9 0 25.8 9.2 25.8 24.6v7.9c-3.5-.7-10.7-1.2-15.1-1.2-38.2 0-57.6 13.4-57.6 41.4 0 25.1 15.4 37.7 38.7 37.7 15.7 0 30.8-7.2 36-18.9l4 15.9h15.4v-83.2c-.1-26.3-11.5-43.9-44-43.9M557.63 149.1c-8.2 0-15.4-1-20.8-3.5V70.5c7.4-6.2 16.6-10.7 28.3-10.7 21.1 0 29.2 14.9 29.2 39 0 34.2-13.1 50.3-36.7 50.3m9.2-110.6c-19.5 0-30 13.3-30 13.3v-21l-.1-27.8h-21.3l.1 158.5c10.7 4.5 25.3 6.9 41.2 6.9 40.7 0 60.3-26 60.3-70.9-.1-35.5-18.2-59-50.2-59M77.9 20.6c19.3 0 31.8 6.4 39.9 12.9l9.4-16.3C114.5 6 97.3 0 78.9 0 32.5 0 0 28.3 0 85.4c0 59.8 35.1 83.1 75.2 83.1 20.1 0 37.2-4.7 48.4-9.4l-.5-63.9V75.1H63.6v20.1h38l.5 48.5c-5 2.5-13.6 4.5-25.3 4.5-32.2 0-53.8-20.3-53.8-63-.1-43.5 22.2-64.6 54.9-64.6M231.43 2.95h-21.3l.1 27.3v94.3c0 26.3 11.4 43.9 43.9 43.9 4.5 0 8.9-.4 13.1-1.2v-19.1c-3.1.5-6.4.7-9.9.7-17.9 0-25.8-9.2-25.8-24.6v-65h35.7v-17.8h-35.7l-.1-38.5M155.96 165.47h21.3v-124h-21.3v124M155.96 24.37h21.3V3.07h-21.3v21.3">
+                                        </path>
+                                    </svg>
+
+                                </span>
+                            </a>的menu選擇Merge Request,選擇剛剛push的資料
+                        </fieldset>
+                    </div>
+                </b-tab>
+                <b-tab title="Disabled" disabled>
+                    <p>table:game : status 0為不可玩,1可玩,isenabled:true 為可見,false不可見</p>
+                    <p>I'm a disabled tab!</p>
+                </b-tab>
+            </b-tabs>
+        </div>
+    </div>
 </body>
 <script type="importmap">
 	{
@@ -711,8 +749,8 @@
 	}
 </script>
 <script>
-	var normalDesc = {
-		'追加遊戲': `	<fieldset>
+    var normalDesc = {
+        '追加遊戲': `	<fieldset>
 							<legend>
 								白牌追加遊戲
 							</legend>
@@ -742,7 +780,7 @@
 						</fieldset>
 						
 						`,
-		'新遊戲上線': `						<fieldset>
+        '新遊戲上線': `						<fieldset>
 							<legend>遊戲商加新遊戲(新遊戲上線)
 							</legend>
 							<ol>
@@ -793,14 +831,14 @@
 								有的話把jira單work flow改為QA(Stag) 然後轉給Freedom/Kevin (or crystal)
 							</fieldset>
 						`,
-		'修改限紅': `						<fieldset>
+        '修改限紅': `						<fieldset>
 							<legend>修改限紅</legend>
 							<a href="https://wiki.nexiosoft.com/display/MPS/GP+BetLimit">
 								參考限紅wiki,git的歷程
 							</a>
 							<span style="color:red">PS:AWC的限紅改完的時候 如果是更改全站, build完deploy之前須通知alice,個人可以直接deploy</span>
 						</fieldset>`,
-		'手動添加AE_LOTTO': `					<fieldset>
+        '手動添加AE_LOTTO': `					<fieldset>
 						<legend>
 							手動添加AE_LOTTO
 						</legend>
@@ -839,7 +877,7 @@
 						"gameTypes": ["SELF_OPEN_GAME_PROVIDER","SELF_OPEN_VENDOR","FAKE_OFFICIAL"]
 						}'</blockquote>
 					</fieldset>`,
-		'更改前/後台域名': `					<fieldset>
+        '更改前/後台域名': `					<fieldset>
 						<legend>舊域名取代為新域名(參考git歷程)</legend>
 
 						<ol>
@@ -864,7 +902,7 @@
 							</li>
 						</ol>
 					</fieldset>`,
-		'修改平台名稱': `					<fieldset>
+        '修改平台名稱': `					<fieldset>
 						<legend>
 							修改平台名稱(參考git歷程)
 						</legend>
@@ -875,275 +913,339 @@
 							<li>修改專案deploy的 build.sh  的tagVer</li>
 						</ol>
 					</fieldset>`
-	}
+    }
 </script>
 <script>
-	const doubleDash = '--'
-	const comma = ','
-	var localStorage = Window.localStorage
-	var app = new Vue({
-		el: '#app',
-		vuetify: new Vuetify(),
-		data: {
-			info: {
-				env: 'PROD', white_label_id: '', white_label_name: '', currency: '', account_prefix: '', ims_home: '', ec_home: '', ec_api: '', ag: '',
-				db_user: '', db_pwd: ''
-			},
-			result: {
-				env: 'PROD', white_label_id: '', white_label_name: '', currency: '', account_prefix: '', ims_home: '', ec_home: '', ec_api: '', ag: '',
-				db_user: '', db_pwd: ''
-			},
-			account: '',
-			password: '',
-			gradleValue: '',
-			start: './gradlew bootRun -Pargs=',
-			env: 'PROD',
-			jiar_post: '',
-			branch: '',
-			jira_web: 'https://jira.nexiosoft.com/browse/',
-			dev_web: 'https://devops-portal.admincod88.com/wl/info?search_type=WL_CODE&keyword=',
-			dev_result: '',
-			isChange: true,
-			toolInput: '',
-			toolResult: '',
-			note: '',
-			editor: '',
-			tmpList: [],
-			isfilterSelect: true,
-			disabledHint: true,
-			jenkinsUrl: '',
-			normalDescInfo: normalDesc,
-			normalDesc: '',
-			items: [{"code": "williamhill","currency": "BRL",
-	"gameGradle": "./gradlew bootRun -Pargs=--env=PROD,--white_label_id=williamhill,--white_label_name='William Hill',--currency=BRL,--account_prefix=B08,--game_only=true"
-	,"name": "William Hill"
-	,"prefix": "B08"}],
-	headers:[
-			{ text: 'prefix', value: 'prefix',sortable: true},
-			{ text: 'code', value: 'code' },
-			{ text: '幣別', value: 'currency' },
-			{ text: '站名', value: 'name' },
-			{ text: '指令', value: 'gameGradle' },
-			],
-			search:'',
-		},
-		watch: {
-			// whenever question changes, this function will run
-			result: {
-				handler(newObj, oldObj) {
-					this.gradleValue = this.start
-					let skip = ['ag']
-					let singleQuotationMarks = ['white_label_name']
-					let needHttps = ['ims_home', 'ec_home', 'ec_api']
-					for (const [key, value] of Object.entries(this.result)) {
-						if (skip.includes(key)) {
-							continue
-						}
-						let tmpVal = value
-						tmpVal = needHttps.includes(key) ? (value.indexOf('https') == -1 || value.indexOf('http') == -1)
-							? 'https://' + value : value : value
-						this.gradleValue = this.gradleValue + (singleQuotationMarks.includes(key) ?
-							`${doubleDash}${key}='${tmpVal.trim()}'${comma}` : `${doubleDash}${key}=${tmpVal.trim()}${comma}`)
-						if (key === 'account_prefix') {
-							this.dev_result = this.dev_web + value
-						}
+    const doubleDash = '--'
+    const comma = ','
+    var localStorage = Window.localStorage
+    var app = new Vue({
+        el: '#app',
+        vuetify: new Vuetify(),
+        data: {
+            info: {
+                env: 'PROD', white_label_id: '', white_label_name: '', currency: '', account_prefix: '', ims_home: '', ec_home: '', ec_api: '', ag: '',
+                db_user: '', db_pwd: ''
+            },
+            result: {
+                env: 'PROD', white_label_id: '', white_label_name: '', currency: '', account_prefix: '', ims_home: '', ec_home: '', ec_api: '', ag: '',
+                db_user: '', db_pwd: ''
+            },
+            account: '',
+            password: '',
+            gradleValue: '',
+            start: './gradlew bootRun -Pargs=',
+            env: 'PROD',
+            jiar_post: '',
+            branch: '',
+            jira_web: 'https://jira.nexiosoft.com/browse/',
+            dev_web: 'https://devops-portal.admincod88.com/wl/info?search_type=WL_CODE&keyword=',
+            dev_result: '',
+            isChange: true,
+            toolInput: '',
+            toolResult: '',
+            note: '',
+            editor: '',
+            tmpList: [],
+            isfilterSelect: true,
+            disabledHint: true,
+            jenkinsUrl: '',
+            normalDescInfo: normalDesc,
+            normalDesc: '',
+            items: [{
+                "code": "williamhill", "currency": "BRL",
+                "gameGradle": "./gradlew bootRun -Pargs=--env=PROD,--white_label_id=williamhill,--white_label_name='William Hill',--currency=BRL,--account_prefix=B08,--game_only=true"
+                , "name": "William Hill"
+                , "prefix": "B08"
+            }],
+            headers: [
+                { text: 'prefix', value: 'prefix', sortable: true },
+                { text: 'code', value: 'code' },
+                { text: '幣別', value: 'currency' },
+                { text: '站名', value: 'name' },
+                { text: '指令', value: 'gameGradle' },
+            ],
+            search: '',
+            uploadData: null,
+            excelStatus: '',
+        },
+        watch: {
+            // whenever question changes, this function will run
+            result: {
+                handler(newObj, oldObj) {
+                    this.gradleValue = this.start
+                    let skip = ['ag']
+                    let singleQuotationMarks = ['white_label_name']
+                    let needHttps = ['ims_home', 'ec_home', 'ec_api']
+                    for (const [key, value] of Object.entries(this.result)) {
+                        if (skip.includes(key)) {
+                            continue
+                        }
+                        let tmpVal = value
+                        tmpVal = needHttps.includes(key) ? (value.indexOf('https') == -1 || value.indexOf('http') == -1)
+                            ? 'https://' + value : value : value
+                        this.gradleValue = this.gradleValue + (singleQuotationMarks.includes(key) ?
+                            `${doubleDash}${key}='${tmpVal.trim()}'${comma}` : `${doubleDash}${key}=${tmpVal.trim()}${comma}`)
+                        if (key === 'account_prefix') {
+                            this.dev_result = this.dev_web + value
+                        }
 
-					}
-					this.gradleValue = this.gradleValue.replace(/.$/, "")
+                    }
+                    this.gradleValue = this.gradleValue.replace(/.$/, "")
 
-					this.jiar_post = this.start
-						+ `${doubleDash}env=${newObj.env.trim()}${comma}`
-						+ `${doubleDash}white_label_id=${newObj.white_label_id.trim()}${comma}`
-						+ `${doubleDash}white_label_name='${newObj.white_label_name.trim()}'${comma}`
-						+ `${doubleDash}currency=${newObj.currency.trim()}${comma}`
-						+ `${doubleDash}account_prefix=${newObj.account_prefix.trim()}${comma}`
-						+ '--game_only=true'
-				},
-				deep: true
-			},
-			"result.db_pwd": function (value) {
-				if (this.result.account_prefix) {
-					this.saveTmpData()
-				}
-			},
-			"result.account_prefix": function (value) {
-				if (this.account_prefix != '' && this.result.currency === '') {
-					if (value.length == 3 && localStorage.getItem(value) && this.result.currency === '') {
-						this.result = JSON.parse(localStorage.getItem(value))
-					}
-				}
-			},
-			"result.env": function (value) {
-				switch (value) {
-					case 'PROD':
-						this.jenkinsUrl = "https://jenkins.admincod88.com";
-						break;
-					case 'UAT':
-						this.jenkinsUrl = "https://ojs.uatdevops.site";
-						break;
-					case 'STG':
-						this.jenkinsUrl = "https://jenkins.stgdevops.site";
-						break;
-				}
-			}
-			, branch: function (val) {
-				if (val.length > 3 && localStorage.getItem(this.branch) && this.result.currency === '') {
-					this.result = JSON.parse(localStorage.getItem(this.branch))
-				}
-			},
-			version: function () {
-				localStorage.setItem('version', this.version);
-			},
-			note: function () {
-				localStorage.setItem('note', this.note);
-			},
-			"editor.getData": function (val) {
-				let f = val;
-				console.log(f)
-			},
-			toolInput: function (val) {
-				this.toolResult = `共 ${val.length} 字`
-			}
-		},
-		computed: {
-			kibana: function () {
-				let param = `"doSync done" and "${this.result.white_label_id}" `
-				return `https://kibana.admincod88.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'181d0410-dd36-11ec-92f1-c505820dd27e',interval:auto,query:(language:kuery,query:'${param}'),sort:!())`
-			}
-		},
-		methods: {
-			addHttps(value) {
-				if (value.indexOf('https') == -1 || value.indexOf('http') == -1) {
-					return 'https://' + value
-				}
-				return value
-			},
-			copyText(text) {
-				if (text.slice(text.length - 1) === comma) {
-					text = text.substring(0, text.length - 1)
-				}
-				navigator.clipboard.writeText(text);
-			},
-			resetResult() {
-				this.result = this.info
-			},
-			changeData(value) {
-				if (value) {
-					this.result = JSON.parse(localStorage.getItem(value))
-				}
-			},
-			upperCase() {
-				this.toolResult = this.toolInput.toUpperCase()
-			},
-			lowerCase() {
-				this.toolResult = this.toolInput.toLowerCase()
-			},
-			toHump() {
-				this.toolResult = this.toolInput.replace(/\_(\w)/g, function (all, letter) {
-					return letter.toUpperCase()
-				})
-			},
-			toLine() {
-				this.toolResult = this.toolInput.replace(/([A-Z])/g, "_$1").toLowerCase()
-			},
-			clearLocalStorage() {
-				localStorage.clear()
-			},
-			addDoubleQuotes() {
-				this.toolResult = ''
-				this.toolInput.split(',').forEach(element => {
-					this.toolResult = this.toolResult + `"${element.trim()}",`
-				})
-				this.toolResult = this.toolResult.replace(/.$/, "")
-			},
-			spaceToUnderLine() {
-				this.toolResult = this.toolInput.replace(/ /g, "_")
-			}
-			, toTrim() {
-				this.toolResult = this.toolInput.trim()
-			},
-			jsonToBulk() {
-				this.toolResult = ''
-				let tmpJson = JSON.parse(this.toolInput)
-				for (const [key, value] of Object.entries(tmpJson)) {
-					this.toolResult += `${key.replace("\"", "")}:${value}` + `<br>`
-				}
-			},
-			bulkToJSON() {
-				console.log(this.toolInput)
-				// let tmpJson = JSON.parse(this.toolInput)
-				// for (const [key, value] of Object.entries(this.tmpJson)) {
-				// 	``
-				// }
-			},
-			jsonBeautifier() {
-				this.toolResult = JSON.stringify(JSON.parse(this.toolInput.trim()), null, 4);
-			}
-			, saveTmpData() {
-				localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
-				 const formData = new FormData();
-				 formData.append("prefix",this.result.account_prefix)
-				 formData.append("code",this.result.white_label_id)
-				 formData.append("currency",this.result.currency )
-				 formData.append("name",this.result.white_label_name)
-				 formData.append("gameGradle",this.jiar_post)
-				 const url = 'https://allwhitelabel.herokuapp.com/whitelabel/save';
-				fetch(url, {
+                    this.jiar_post = this.start
+                        + `${doubleDash}env=${newObj.env.trim()}${comma}`
+                        + `${doubleDash}white_label_id=${newObj.white_label_id.trim()}${comma}`
+                        + `${doubleDash}white_label_name='${newObj.white_label_name.trim()}'${comma}`
+                        + `${doubleDash}currency=${newObj.currency.trim()}${comma}`
+                        + `${doubleDash}account_prefix=${newObj.account_prefix.trim()}${comma}`
+                        + '--game_only=true'
+                },
+                deep: true
+            },
+            "result.db_pwd": function (value) {
+                if (this.result.account_prefix) {
+                    this.saveTmpData()
+                }
+            },
+            "result.account_prefix": function (value) {
+                if (this.account_prefix != '' && this.result.currency === '') {
+                    if (value.length == 3 && localStorage.getItem(value) && this.result.currency === '') {
+                        this.result = JSON.parse(localStorage.getItem(value))
+                    }
+                }
+            },
+            "result.env": function (value) {
+                switch (value) {
+                    case 'PROD':
+                        this.jenkinsUrl = "https://jenkins.admincod88.com";
+                        break;
+                    case 'UAT':
+                        this.jenkinsUrl = "https://ojs.uatdevops.site";
+                        break;
+                    case 'STG':
+                        this.jenkinsUrl = "https://jenkins.stgdevops.site";
+                        break;
+                }
+            }
+            , branch: function (val) {
+                if (val.length > 3 && localStorage.getItem(this.branch) && this.result.currency === '') {
+                    this.result = JSON.parse(localStorage.getItem(this.branch))
+                }
+            },
+            version: function () {
+                localStorage.setItem('version', this.version);
+            },
+            note: function () {
+                localStorage.setItem('note', this.note);
+            },
+            "editor.getData": function (val) {
+                let f = val;
+                console.log(f)
+            },
+            toolInput: function (val) {
+                this.toolResult = `共 ${val.length} 字`
+            }
+        },
+        computed: {
+            kibana: function () {
+                let param = `"doSync done" and "${this.result.white_label_id}" `
+                return `https://kibana.admincod88.com/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(columns:!(_source),filters:!(),index:'181d0410-dd36-11ec-92f1-c505820dd27e',interval:auto,query:(language:kuery,query:'${param}'),sort:!())`
+            }
+        },
+        methods: {
+            addHttps(value) {
+                if (value.indexOf('https') == -1 || value.indexOf('http') == -1) {
+                    return 'https://' + value
+                }
+                return value
+            },
+            copyText(text) {
+                if (text.slice(text.length - 1) === comma) {
+                    text = text.substring(0, text.length - 1)
+                }
+                navigator.clipboard.writeText(text);
+            },
+            resetResult() {
+                this.result = this.info
+            },
+            changeData(value) {
+                if (value) {
+                    this.result = JSON.parse(localStorage.getItem(value))
+                }
+            },
+            upperCase() {
+                this.toolResult = this.toolInput.toUpperCase()
+            },
+            lowerCase() {
+                this.toolResult = this.toolInput.toLowerCase()
+            },
+            toHump() {
+                this.toolResult = this.toolInput.replace(/\_(\w)/g, function (all, letter) {
+                    return letter.toUpperCase()
+                })
+            },
+            toLine() {
+                this.toolResult = this.toolInput.replace(/([A-Z])/g, "_$1").toLowerCase()
+            },
+            clearLocalStorage() {
+                localStorage.clear()
+            },
+            addDoubleQuotes() {
+                this.toolResult = ''
+                this.toolInput.split(',').forEach(element => {
+                    this.toolResult = this.toolResult + `"${element.trim()}",`
+                })
+                this.toolResult = this.toolResult.replace(/.$/, "")
+            },
+            spaceToUnderLine() {
+                this.toolResult = this.toolInput.replace(/ /g, "_")
+            }
+            , toTrim() {
+                this.toolResult = this.toolInput.trim()
+            },
+            jsonToBulk() {
+                this.toolResult = ''
+                let tmpJson = JSON.parse(this.toolInput)
+                for (const [key, value] of Object.entries(tmpJson)) {
+                    this.toolResult += `${key.replace("\"", "")}:${value}` + `<br>`
+                }
+            },
+            bulkToJSON() {
+                console.log(this.toolInput)
+                // let tmpJson = JSON.parse(this.toolInput)
+                // for (const [key, value] of Object.entries(this.tmpJson)) {
+                // 	``
+                // }
+            },
+            jsonBeautifier() {
+                this.toolResult = JSON.stringify(JSON.parse(this.toolInput.trim()), null, 4);
+            }
+            , saveTmpData() {
+                localStorage.setItem(this.result.account_prefix, JSON.stringify(this.result));
+                const formData = new FormData();
+                formData.append("prefix", this.result.account_prefix)
+                formData.append("code", this.result.white_label_id)
+                formData.append("currency", this.result.currency)
+                formData.append("name", this.result.white_label_name)
+                formData.append("gameGradle", this.jiar_post)
+                const url = 'https://allwhitelabel.herokuapp.com/whitelabel/save';
+                fetch(url, {
                     method: 'POST',
                     body: formData,
                 })
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data)
-                }).catch(function(err) {
-				console.log(err)
-				})
-			},
-			deleteTmpData() {
-				if (this.result.account_prefix && confirm('確認刪除?')) {
-					localStorage.removeItem(this.result.account_prefix);
-				}
-			},
-			toNormalDesc(key) {
-				this.normalDesc = this.normalDescInfo[key];
-			},
-			filterOnlyCapsText (value, search, item) {
-				let arr = search.split(",").map(element => {
-				if (typeof element === 'string') {
-					return element.trim();
-				}
-				return element;
-				});
-				return arr.includes(value)
-			},
-		},
-		mounted() {
-			let setValue = ['version', 'note'];
-			setValue.forEach(e => {
-				if (localStorage.getItem(e)) {
-					Reflect.set(this, e, localStorage.getItem(e))
-				}
-			})
-			this.tmpList = Object.keys(localStorage).sort().filter(function (e) {
-				return !setValue.includes(e)
-			})
-			
-			var request = new Request('https://allwhitelabel.herokuapp.com/whitelabel/getAll');
-			fetch(request)
-			.then(function(response) {
-				return response.json()
-			})
-			.then(function(data){
-				app.$nextTick(() => {
-				app.items = JSON.parse(JSON.stringify(data.data))
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data)
+                    }).catch(function (err) {
+                        console.log(err)
+                    })
+            },
+            deleteTmpData() {
+                if (this.result.account_prefix && confirm('確認刪除?')) {
+                    localStorage.removeItem(this.result.account_prefix);
+                }
+            },
+            toNormalDesc(key) {
+                this.normalDesc = this.normalDescInfo[key];
+            },
+            filterOnlyCapsText(value, search, item) {
+                let arr = search.split(",").map(element => {
+                    if (typeof element === 'string') {
+                        return element.trim();
+                    }
+                    return element;
+                });
+                return arr.includes(value)
+            },
+            exportXlsx() {
+                if (this.excelStatus === '匯出中') return
+                var request = new Request('https://allwhitelabel.herokuapp.com/whitelabel/export');
+                this.excelStatus = '匯出中'
+                fetch(request)
+                    .then((res) => {
+                        console.log(res)
+                        return res.blob();
+                    })
+                    .then((data) => {
+                        console.log(data)
+                        var a = document.createElement("a");
+                        a.href = window.URL.createObjectURL(data);
+                        a.download = formatDate() + ".xlsx";
+                        a.click();
+                        this.excelStatus = '匯出完成'
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                        this.excelStatus = '失敗'
+                    })
+            },
+            importXlsx(e) {
+                var request = new Request('https://allwhitelabel.herokuapp.com/whitelabel/import');
+                let formData = new FormData();
 
-       		 });
-			})
-			.catch(function(err) {
-				console.log(err)
-			})
-		},
-	})
+                formData.append('method', "post");
+                formData.append('file', this.uploadData);
+                if (!this.uploadData) return
+                this.excelStatus = '上傳中'
+                fetch(request, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then((res) => {
+                        console.log(res)
+                        this.excelStatus = '成功'
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                        this.excelStatus = '失敗'
+                    })
+            },
+            setUploadData(e) {
+                this.uploadData = e.target.files[0]
+            }
+        },
+        mounted() {
+            let setValue = ['version', 'note'];
+            setValue.forEach(e => {
+                if (localStorage.getItem(e)) {
+                    Reflect.set(this, e, localStorage.getItem(e))
+                }
+            })
+            this.tmpList = Object.keys(localStorage).sort().filter(function (e) {
+                return !setValue.includes(e)
+            })
+
+            var request = new Request('https://allwhitelabel.herokuapp.com/whitelabel/getAll');
+            fetch(request)
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+                    app.$nextTick(() => {
+                        app.items = JSON.parse(JSON.stringify(data.data))
+
+                    });
+                })
+                .catch(function (err) {
+                    console.log(err)
+                })
+        },
+    })
+    function formatDate(date) {
+        var d = date ? new Date(date) : new Date(),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
 </script>
 
 </html>
