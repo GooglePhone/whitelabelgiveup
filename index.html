@@ -275,7 +275,6 @@
                                 <p><a target="_blank" href="https://devops-portal.admincod88.com/accounts/login/">DevOps
                                         Portal</a>
                                 <p>
-
                             </div>
                         </fieldset>
 
@@ -611,7 +610,9 @@
                     </div>
                     <div>
                         <template>
-                            <v-data-table :headers="headers" :items="items" item-key="perfix" :items-per-page="500"
+                            <v-data-table :headers="headers" :items="items" :items-per-page="500"
+                            item-key="prefix"
+                            show-select
                                 :custom-filter="filterOnlyCapsText" :search="search" class="elevation-1">
                                 <template v-slot:top>
                                     <v-text-field v-model="search" label="Prefix Search (UPPER CASE ONLY)" class="mx-4">
@@ -642,14 +643,6 @@
                 <b-tab title="記事">
                     <div>
                         <textarea v-model="note" style="width: 100%;" rows="20"></textarea>
-                    </div>
-                </b-tab>
-                <b-tab title="備註">
-                    <div>
-                        <ol>
-                            <li type="I">現在測試SimplePlay 要到phpvnd</li>
-                        </ol>
-
                     </div>
                 </b-tab>
                 <b-tab title="git">
@@ -731,10 +724,6 @@
                             </a>的menu選擇Merge Request,選擇剛剛push的資料
                         </fieldset>
                     </div>
-                </b-tab>
-                <b-tab title="Disabled" disabled>
-                    <p>table:game : status 0為不可玩,1可玩,isenabled:true 為可見,false不可見</p>
-                    <p>I'm a disabled tab!</p>
                 </b-tab>
             </b-tabs>
         </div>
@@ -968,6 +957,7 @@
             search: '',
             uploadData: null,
             excelStatus: '',
+            selected:[],
         },
         watch: {
             // whenever question changes, this function will run
@@ -1150,7 +1140,7 @@
                 this.normalDesc = this.normalDescInfo[key];
             },
             filterOnlyCapsText(value, search, item) {
-                let arr = search.split(",").map(element => {
+                let arr = search.replaceAll(" ",",").replaceAll("，",",").split(",").map(element => {
                     if (typeof element === 'string') {
                         return element.trim();
                     }
