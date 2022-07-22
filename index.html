@@ -9,7 +9,9 @@
 
     <!-- Load required Bootstrap and BootstrapVue CSS -->
     <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+    <!-- <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" /> -->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-vue/2.22.0/bootstrap-vue.min.css" />
+    
 
     <!-- Load polyfills to support older browsers -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"
@@ -17,11 +19,13 @@
 
     <!-- Load Vue followed by BootstrapVue -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-vue/2.22.0/bootstrap-vue.min.js"></script>
+    <!-- <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 
     <!-- Load the following for BootstrapVueIcons support -->
-    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+    <!-- <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-vue/2.22.0/bootstrap-vue-icons.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
@@ -1127,6 +1131,7 @@
                     .then((res) => res.json())
                     .then((data) => {
                         console.log(data)
+                        getAllWhiteLabel()
                     }).catch(function (err) {
                         console.log(err)
                     })
@@ -1205,8 +1210,12 @@
             this.tmpList = Object.keys(localStorage).sort().filter(function (e) {
                 return !setValue.includes(e)
             })
+            getAllWhiteLabel()
+        },
+    })
 
-            var request = new Request('https://allwhitelabel.herokuapp.com/whitelabel/getAll');
+    function getAllWhiteLabel(){
+        var request = new Request('https://allwhitelabel.herokuapp.com/whitelabel/getAll');
             fetch(request)
                 .then(function (response) {
                     return response.json()
@@ -1220,8 +1229,9 @@
                 .catch(function (err) {
                     console.log(err)
                 })
-        },
-    })
+    }
+
+
     function formatDate(date) {
         var d = date ? new Date(date) : new Date(),
             month = '' + (d.getMonth() + 1),
