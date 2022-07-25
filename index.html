@@ -1056,7 +1056,6 @@
                 this.toolResult = `共 ${val.length} 字`
             },
             search(value){
-                console.log(1)
                 let arr = getArrayByCondition()
                 let tmp = app.items.sort(function(a, b) {
                     if (a.prefix < b.prefix) {
@@ -1191,11 +1190,9 @@
                 this.excelStatus = '匯出中'
                 fetch(request)
                     .then((res) => {
-                        console.log(res)
                         return res.blob();
                     })
                     .then((data) => {
-                        console.log(data)
                         var a = document.createElement("a");
                         a.href = window.URL.createObjectURL(data);
                         a.download = formatDate() + ".xlsx";
